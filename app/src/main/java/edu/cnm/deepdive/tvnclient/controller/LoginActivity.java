@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.snackbar.Snackbar;
-import edu.cnm.deepdive.tvnclient.MainActivity;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.ActivityLoginBinding;
 import edu.cnm.deepdive.tvnclient.viewmodel.LoginViewModel;

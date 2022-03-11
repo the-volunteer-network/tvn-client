@@ -1,7 +1,8 @@
-package edu.cnm.deepdive.tvnclient;
+package edu.cnm.deepdive.tvnclient.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import edu.cnm.deepdive.tvnclient.R;
 
 public class MainActivity extends AppCompatActivity {
 
