@@ -14,6 +14,9 @@ import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.ActivityLoginBinding;
 import edu.cnm.deepdive.tvnclient.viewmodel.LoginViewModel;
 
+/**
+ * Provides user authentication and sets the login activity screen.
+ */
 public class LoginActivity extends AppCompatActivity {
 
   private ActivityLoginBinding binding;

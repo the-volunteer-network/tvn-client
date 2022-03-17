@@ -18,6 +18,9 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleEmitter;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+/**
+ * Provides and defines the Google sign-in authentication process.
+ */
 public class GoogleSignInService {
 
   private static final String BEARER_TOKEN_FORMAT = "Bearer %s";
@@ -39,6 +42,10 @@ public class GoogleSignInService {
 
   }
 
+  /**
+   * Sets the context of this instance og Google sign in.
+   * @param context
+   */
   public static void setContext(Application context) {
     GoogleSignInService.context = context;
   }
@@ -60,6 +67,10 @@ public class GoogleSignInService {
         .observeOn(Schedulers.io());
   }
 
+  /**
+   * Refresh the bearer token of this application.
+   * @return
+   */
   public Single<String> refreshBearerToken() {
     return refresh()
         .map(this::getBearerToken);
@@ -79,11 +90,20 @@ public class GoogleSignInService {
 
   }
 
+  /**
+   * Starts  and launches the Google sign-in process.
+   * @param launcher
+   */
   public void startSignIn(ActivityResultLauncher<Intent> launcher) {
     launcher.launch(client.getSignInIntent());
 
   }
 
+  /**
+   * Complete the Google sign-in process
+   * @param result
+   * @return
+   */
   public Single<GoogleSignInAccount> completeSignIn(ActivityResult result) {
     return Single
         .create((SingleEmitter<GoogleSignInAccount> emitter) -> {
@@ -100,6 +120,10 @@ public class GoogleSignInService {
         .observeOn(Schedulers.io());
   }
 
+  /**
+   * Terminates this instance of the Google sign-in and signs the user of the application out.
+   * @return
+   */
   public Completable signOut() {
     return Completable
         .create((emitter) ->
