@@ -50,4 +50,7 @@ public interface TVNServiceProxy {
   @GET("organizations/{organizationId}/opportunities/{opportunityId}")
   Single<List<Opportunity>> getOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Header("Authorization") String bearerToken);
 
+  @PUT("organizations/{organizationId}/opportunities/{opportunityId}")
+  Single<List<Opportunity>> addOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Body Opportunity opportunity, @Header("Authorization") String bearerToken);
+
 }
