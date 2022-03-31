@@ -1,9 +1,12 @@
 package edu.cnm.deepdive.tvnclient.service;
 
 import android.content.Context;
+import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.List;
 import java.util.UUID;
 
 public class OrganizationRepository {
@@ -29,10 +32,62 @@ public class OrganizationRepository {
         .flatMap((token) -> serviceProxy.isFavorite(organizationId, token));
   }
 
-  public Single<Boolean> setFavorite (UUID organizationId, boolean favorite) {
+  public Single<Boolean> setFavorite(UUID organizationId, boolean favorite) {
     return signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
-        .flatMap((token) -> serviceProxy.setFavorite(organizationId,favorite,  token));
+        .flatMap((token) -> serviceProxy.setFavorite(organizationId, favorite, token));
+  }
+
+  public Single<Organization> addOrganization(Organization organization) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.addOrganization(organization, token));
+  }
+
+  public Single<Organization> modifyOrganization(UUID organizationId, Organization organization) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.modifyOrganization(organizationId, organization, token));
+
+  }
+
+  public Single<Organization> getOrganization(UUID organizationId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.getOrganization(organizationId, token));
+  }
+  public Single<String> getOrganizationName(UUID organizationId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.getOrganizationName(organizationId, token));
+  }
+
+  public Single<Opportunity> addOpportunity(UUID organizationId, Opportunity opportunity) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.addOpportunity(organizationId, opportunity, token));
+  }
+
+  public Single<Opportunity> modifyOpportunity(UUID organizationId, UUID opportunityId,
+      Opportunity opportunity) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap(
+            (token) -> serviceProxy.modifyOpportunity(organizationId, opportunityId, opportunity,
+                token));
+  }
+
+  public Single<Opportunity> getOpportunity(UUID organizationId, UUID opportunityId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.getOpportunity(organizationId, opportunityId, token));
   }
 }

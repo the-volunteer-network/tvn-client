@@ -60,10 +60,10 @@ public interface TVNServiceProxy {
   Single<Opportunity> addOpportunity(@Path("organizationId") UUID organizationId, @Body Opportunity opportunity, @Header("Authorization") String bearerToken);
 
   @GET("organizations/{organizationId}/opportunities/{opportunityId}")
-  Single<List<Opportunity>> getOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Header("Authorization") String bearerToken);
+  Single<Opportunity> getOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Header("Authorization") String bearerToken);
 
   @PUT("organizations/{organizationId}/opportunities/{opportunityId}")
-  Single<List<Opportunity>> addOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Body Opportunity opportunity, @Header("Authorization") String bearerToken);
+  Single<Opportunity> modifyOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Body Opportunity opportunity, @Header("Authorization") String bearerToken);
 
   @DELETE("organizations/{organizationId}/opportunities/{opportunityId}")
   Completable deleteOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Header("Authorization") String bearerToken);
