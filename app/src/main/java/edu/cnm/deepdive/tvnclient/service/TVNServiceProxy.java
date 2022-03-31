@@ -69,10 +69,11 @@ public interface TVNServiceProxy {
   Completable deleteOpportunity(@Path("organizationId") UUID organizationId, @Path("opportunityId") UUID opportunityId, @Header("Authorization") String bearerToken);
 
   @GET("users/me")
-  Single<List<User>> getCurrentUser(@Header("Authorization") String bearerToken);
+  Single<User> getCurrentUser(@Header("Authorization") String bearerToken);
+// TODO Add proxy method for updating user profile when available.
 
   @GET("users/me/favorites")
-  Single<List<User>> getFavorites(@Header("Authorization") String bearerToken);
+  Single<List<Organization>> getFavorites(@Header("Authorization") String bearerToken);
 
   @GET("users/me/favorites/{organizationId}")
   Single<Boolean> isFavorite(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
