@@ -5,7 +5,7 @@ import android.os.Bundle;
 import edu.cnm.deepdive.tvnclient.R;
 
 /**
- * Main activity class for the TVN android project.
+ * Main activity Class for the TVN android project.
  */
 public class MainActivity extends AppCompatActivity {
 
