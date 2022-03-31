@@ -13,16 +13,19 @@ public class Organization {
   private String name;
 
   @Expose
-  private boolean isFavorite;
+  private boolean favorite;
 
-/*  @Expose
+  @Expose
+  private boolean volunteer;
+
+ @Expose
   private String about;
 
   @Expose
   private String mission;
 
   @Expose
-  private Date created ;*/
+  private Date created ;
 
   public UUID getId() {
     return id;
@@ -41,10 +44,42 @@ public class Organization {
   }
 
   public boolean isFavorite() {
-    return isFavorite;
+    return favorite;
   }
 
   public void setFavorite(boolean favorite) {
-    isFavorite = favorite;
+    this.favorite = favorite;
+  }
+
+  public boolean isVolunteer() {
+    return volunteer;
+  }
+
+  public void setVolunteer(boolean volunteer) {
+    this.volunteer = volunteer;
+  }
+
+  public String getAbout() {
+    return about;
+  }
+
+  public void setAbout(String about) {
+    this.about = about;
+  }
+
+  public String getMission() {
+    return mission;
+  }
+
+  public void setMission(String mission) {
+    this.mission = mission;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
   }
 }
