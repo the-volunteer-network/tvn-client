@@ -14,7 +14,7 @@ public class Opportunity {
 
 
 
-/*  @Expose
+ @Expose
   private String title;
 
   @Expose
@@ -24,7 +24,7 @@ public class Opportunity {
   private  String description;
 
   @Expose
-  private Date created;*/
+  private Date created;
 
 
   public UUID getId() {
@@ -41,5 +41,37 @@ public class Opportunity {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getNeededSkill() {
+    return neededSkill;
+  }
+
+  public void setNeededSkill(String neededSkill) {
+    this.neededSkill = neededSkill;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
   }
 }

@@ -15,15 +15,7 @@ public class User {
   @Expose
   private String displayName;
 
-  @Expose
-  private boolean isVolunteer;
 
-  @Expose
-  private boolean isFavorite;
-
-/*
-  @Expose
-  private int age;
 
   @Expose
   private String location;
@@ -36,7 +28,7 @@ public class User {
 
   @Expose
   private Date created;
-*/
+
 
   public UUID getId() {
     return id;
@@ -62,19 +54,35 @@ public class User {
     this.displayName = displayName;
   }
 
-  public boolean isVolunteer() {
-    return isVolunteer;
+  public String getLocation() {
+    return location;
   }
 
-  public void setVolunteer(boolean volunteer) {
-    isVolunteer = volunteer;
+  public void setLocation(String location) {
+    this.location = location;
   }
 
-  public boolean isFavorite() {
-    return isFavorite;
+  public String getEmail() {
+    return email;
   }
 
-  public void setFavorite(boolean favorite) {
-    isFavorite = favorite;
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
   }
 }
