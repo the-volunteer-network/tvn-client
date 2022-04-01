@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * Provide data to the view so the ew view can display those data on screen,
  * Allows the user to interact with data and change the data.
  */
-public class LoginViewModel extends AndroidViewModel implements DefaultLifecycleObserver{
+public class UserViewModel extends AndroidViewModel implements DefaultLifecycleObserver{
 
   private final GoogleSignInService signInService;
   private final MutableLiveData<GoogleSignInAccount> account;
@@ -31,7 +31,7 @@ public class LoginViewModel extends AndroidViewModel implements DefaultLifecycle
    * Initializes this instance of LoginViewModel.
    * @param application
    */
-  public LoginViewModel(@NonNull Application application) {
+  public UserViewModel(@NonNull Application application) {
     super(application);
     signInService = GoogleSignInService.getInstance();
     account = new MutableLiveData<>();

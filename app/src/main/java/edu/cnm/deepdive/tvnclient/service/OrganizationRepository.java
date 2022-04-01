@@ -25,6 +25,13 @@ public class OrganizationRepository {
 
   // TODO Add methods for creating, modifying and deleting organizations.
 
+  public Single<List<Organization>> getAll() {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.getAllOrganizations(token));
+  }
+
   public Single<Boolean> getFavorite(UUID organizationId) {
     return signInService
         .refreshBearerToken()
@@ -65,6 +72,13 @@ public class OrganizationRepository {
         .refreshBearerToken()
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.getOrganizationName(organizationId, token));
+  }
+
+  public Completable deleteOrganization(UUID organizationId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMapCompletable((token) -> serviceProxy.deleteOrganization(organizationId, token));
   }
 
   public Single<Opportunity> addOpportunity(UUID organizationId, Opportunity opportunity) {
