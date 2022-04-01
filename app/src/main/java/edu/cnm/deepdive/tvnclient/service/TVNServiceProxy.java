@@ -95,10 +95,7 @@ public interface TVNServiceProxy {
   }
   class InstanceHolder {
 
-    private static final String PROPERTIES_FILE = "local.properties";
-    private static final String BASE_URL_KEY = "base_url";
     private static final TVNServiceProxy INSTANCE;
-
 
     static {
       Gson gson = new GsonBuilder()
