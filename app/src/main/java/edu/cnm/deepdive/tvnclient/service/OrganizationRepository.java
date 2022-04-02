@@ -53,6 +53,21 @@ public class OrganizationRepository {
         .flatMap((token) -> serviceProxy.addOrganization(organization, token));
   }
 
+  public Single<List<Organization>> getAllOrganizations(Organization organization) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.findOrganizations(String.valueOf(organization), token));
+  }
+
+  public Single<List<Organization>> findOrgnizations(Organization organization) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.findOrganizations(String.valueOf(organization) , token));
+  }
+
+
   public Single<Organization> modifyOrganization(UUID organizationId, Organization organization) {
     return signInService
         .refreshBearerToken()
@@ -67,12 +82,22 @@ public class OrganizationRepository {
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.getOrganization(organizationId, token));
   }
+
+
   public Single<String> getOrganizationName(UUID organizationId) {
     return signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.getOrganizationName(organizationId, token));
   }
+
+  public Single<String> setOrganizationName(UUID organizationId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMap((token) -> serviceProxy.getOrganizationName(organizationId, token));
+  }
+
 
   public Completable deleteOrganization(UUID organizationId) {
     return signInService
