@@ -129,4 +129,12 @@ public class OrganizationRepository {
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.getOpportunity(organizationId, opportunityId, token));
   }
+
+  public Completable deleteOpportunity(UUID organizationId, UUID opportunityId) {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io())
+        .flatMapCompletable((token) -> serviceProxy.deleteOpportunity(organizationId, opportunityId, token));
+  }
+
 }

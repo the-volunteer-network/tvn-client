@@ -8,6 +8,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.service.OrganizationRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -22,6 +23,9 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   private final MutableLiveData<List<Organization>> organizations;
   private final MutableLiveData<UUID> organizationId;
   private final MutableLiveData<Organization> organization;
+  private final MutableLiveData<Opportunity> opportunity;
+  private final MutableLiveData<Opportunity> opportunityId;
+  private final MutableLiveData<MutableLiveData<Opportunity>> opportunities;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -33,6 +37,9 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     organizations = new MutableLiveData<>();
     organizationId = new MutableLiveData<>();
     organization = new MutableLiveData<>();
+    opportunity = new MutableLiveData<>();
+    opportunityId = new MutableLiveData<>();
+    opportunities = new MutableLiveData<MutableLiveData<Opportunity>>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
     fetchAll();
@@ -75,16 +82,8 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
-  public void getOrganizationId(UUID id) {
-    throwable.setValue(null);
-    organizationId.setValue(id);
-    organizationRepository
-        .getOrganization(id)
-        .subscribe(
-            (org) -> organization.postValue(org),
-            (throwable) -> postThrowable(throwable),
-            pending
-        );
+  public LiveData<UUID> getOrganizationId(UUID id) {
+    return organizationId;
   }
 
   public void setOrganizationId(UUID id) {
@@ -158,9 +157,25 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
-  public void getAllOpportunities(UUID id) {
+  public LiveData<Opportunity> getAllOpportunities(UUID id) {
+    return opportunities;
+  }
+
+  public LiveData<Opportunity> addOpportunity(UUID id) {
     throwable.setValue(null);
-    organizationId.setValue(id);
+    organization.setValue(id);
+    organizationRepository
+        .getOrganizationName(id)
+        .subscribe(
+            (opp) -> opportunities.postValue(opportunity),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
+
+  public void getOpportunity(UUID id) {
+    throwable.setValue(null);
+    opportunityId.setValue(id);
     organizationRepository
         .getOrganizationName(id)
         .subscribe(
@@ -170,7 +185,28 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  public void modifyOpportunity(UUID id) {
+    throwable.setValue(null);
+    organizationId.setValue(id);
+    organizationRepository
+        .getOrganization(id)
+        .subscribe(
+            (org) -> organization.postValue(org),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
 
+  public void deleteOpportunity(UUID id) {
+    throwable.setValue(null);
+    organizationRepository
+        .deleteOpportunity(id)
+        .subscribe(
+            () -> {/* Do nothing */},
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
 
   public LiveData<Throwable> getThrowable() {
     return throwable;
