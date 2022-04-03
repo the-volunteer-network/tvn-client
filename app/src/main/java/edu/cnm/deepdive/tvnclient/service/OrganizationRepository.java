@@ -60,7 +60,7 @@ public class OrganizationRepository {
         .flatMap((token) -> serviceProxy.findOrganizations(String.valueOf(organization), token));
   }
 
-  public Single<List<Organization>> findOrgnizations(Organization organization) {
+  public Single<List<Organization>> findOrganizations(Organization organization) {
     return signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
