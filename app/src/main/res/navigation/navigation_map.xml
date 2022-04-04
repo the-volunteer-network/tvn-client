@@ -3,6 +3,30 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/navigation_map"
->
+  app:startDestination="@id/navigation_profile">
+
+  <fragment
+    android:id="@+id/navigation_profile"
+    android:name="edu.cnm.deepdive.tvnclient.controller.ProfileFragment"
+    tools:layout="@layout/fragment_profile"
+    android:label="Profile"/>
+
+  <fragment
+    android:id="@+id/navigation_organization"
+    android:name="edu.cnm.deepdive.tvnclient.controller.OrganizationFragment"
+    tools:layout="@layout/fragment_organization"
+    android:label="My organizations"/>
+
+  <fragment
+    android:id="@+id/navigation_search_organization"
+    android:name="edu.cnm.deepdive.tvnclient.controller.SearchOrganizationFragment"
+    tools:layout="@layout/fragment_search_organization"
+    android:label="Search"/>
+
+  <fragment
+    android:id="@+id/navigation_schedule"
+    android:name="edu.cnm.deepdive.tvnclient.controller.ScheduleFragment"
+    tools:layout="@layout/fragment_schedule"
+    android:label="My schedule"/>
 
 </navigation>

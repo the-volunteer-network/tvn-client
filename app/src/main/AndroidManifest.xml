@@ -21,7 +21,8 @@
     </activity>
 
     <activity
-      android:name=".controller.MainActivity">
+      android:name=".controller.MainActivity"
+      android:theme="@style/Theme.TheVolunteerNetwork.NoActionBar">
     </activity>
   </application>
 

@@ -59,7 +59,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
     return account;
   }
 
-  public MutableLiveData<User> getCurrentUser() {
+  public LiveData<User> getCurrentUser() {
     return currentUser;
   }
 
