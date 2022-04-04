@@ -4,4 +4,8 @@
   <string name="display_name_format">Signed in as %s</string>
   <string name="sign_out">Sign out</string>
   <string name="login_activity_label">TVN Sign In</string>
+  <string name="profile_drawer_menu_label">Profile</string>
+  <string name="organization_drawer_menu_label">Organization</string>
+  <string name="schedule_drawer_menu_label">Schedule</string>
+  <string name="search_organizations_drawer_menu_label">Search Organizations</string>
 </resources>
