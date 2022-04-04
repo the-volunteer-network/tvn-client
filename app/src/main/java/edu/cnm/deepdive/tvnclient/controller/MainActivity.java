@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(binding.getRoot());
     setSupportActionBar(binding.toolbar);
-    appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_profile, R.id.navigation_organization, R.id.navigation_schedule, R.id.navigation_search_organization)
+    appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_profile, R.id.navigation_organization, R.id.navigation_opportunity, R.id.navigation_search_organization)
         .setOpenableLayout(binding.drawerLayout)
         .build();
     navController = Navigation.findNavController(this, R.id.nav_host_fragment);

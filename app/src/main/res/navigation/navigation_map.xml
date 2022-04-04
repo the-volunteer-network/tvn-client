@@ -24,9 +24,9 @@
     android:label="Search"/>
 
   <fragment
-    android:id="@+id/navigation_schedule"
-    android:name="edu.cnm.deepdive.tvnclient.controller.ScheduleFragment"
-    tools:layout="@layout/fragment_schedule"
-    android:label="My schedule"/>
+    android:id="@+id/navigation_opportunity"
+    android:name="edu.cnm.deepdive.tvnclient.controller.OpportunityFragment"
+    tools:layout="@layout/fragment_opportunity"
+    android:label="My opportunities"/>
 
 </navigation>

@@ -13,8 +13,8 @@
     android:id="@+id/navigation_organization"
     android:title="@string/organization_drawer_menu_label"/>
   <item
-    android:id="@+id/navigation_schedule"
-    android:title="@string/schedule_drawer_menu_label"/>
+    android:id="@+id/navigation_opportunity"
+    android:title="My opportunities"/>
 
   <item
     android:id="@+id/navigation_search_organization"
