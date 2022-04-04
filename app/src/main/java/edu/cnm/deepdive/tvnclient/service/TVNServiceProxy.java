@@ -50,8 +50,9 @@ public interface TVNServiceProxy {
   @GET("organizations/{organizationId}/name")
   Single<String> getOrganizationName(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
 
+
   @PUT("organizations/{organizationId}/name")
-  Single<String> addOrganizationName(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
+  Single<String> setOrganizationName(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
 
   @GET("organizations/{organizationId}/opportunities")
   Single<List<Opportunity>> getAllOpportunities(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);

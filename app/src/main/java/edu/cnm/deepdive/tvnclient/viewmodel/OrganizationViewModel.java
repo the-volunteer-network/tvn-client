@@ -68,10 +68,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     pending.add(disposable);
     return organizations;
   }
-
-  public void addOrganization(UUID orgId, Organization org) {
+  public void getOrganization (UUID id) {
     throwable.setValue(null);
-    organizationId.setValue(orgId);
+    organizationId.setValue(id);
+    organizationRepository
+        .getOrganization(id)
+        .subscribe(
+            (org) -> organization.postValue(org),
+            (throwable) -> postThrowable(throwable)
+        );
+  }
+
+  public void addOrganization( Organization org) {
+    throwable.setValue(null);
     organizationRepository
         .addOrganization(org)
         .subscribe(
@@ -107,6 +116,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             (throwable) -> postThrowable(throwable),
             pending
         );
+
   }
 
   public void deleteOrganization(UUID id) {
@@ -128,6 +138,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         .subscribe(
 
 
+
         );
   }
 
@@ -136,7 +147,9 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     organizationId.setValue(id);
     organizationRepository
         .setOrganizationName(id)
-        .subscribe();
+        .subscribe(
+
+        );
 
   }
 
@@ -155,7 +168,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
 
   public void  addOpportunity( UUID orgId, Opportunity opp) {
    throwable.setValue(null);
-  organizationId.setValue(orgId);
+
    organizationRepository
        .addOpportunity(orgId, opp)
        .subscribe(

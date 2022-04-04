@@ -95,7 +95,7 @@ public class OrganizationRepository {
     return signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
-        .flatMap((token) -> serviceProxy.getOrganizationName(organizationId, token));
+        .flatMap((token) -> serviceProxy.setOrganizationName(organizationId, token));
   }
 
 
