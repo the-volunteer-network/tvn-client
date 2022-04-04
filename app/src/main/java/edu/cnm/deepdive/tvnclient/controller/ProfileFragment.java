@@ -16,7 +16,7 @@ public class ProfileFragment extends Fragment {
 private UserViewModel userViewModel;
 private OrganizationViewModel organizationViewModel;
 private Opportunity opportunity;
-private
+
 
   @Nullable
   @Override
@@ -33,7 +33,9 @@ private
 
   // TODO Add methods that allows user to modify the aspects of their profile in one action
 
-  public void updateProfile
+  public void updateProfile() {
+
+  }
 
 
 }
