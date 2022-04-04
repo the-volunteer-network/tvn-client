@@ -8,4 +8,7 @@
   <string name="organization_drawer_menu_label">Organization</string>
   <string name="schedule_drawer_menu_label">Schedule</string>
   <string name="search_organizations_drawer_menu_label">Search Organizations</string>
+  <string name="display_name_label">Display Name</string>
+  <string name="user_skills_label">User Skills</string>
+  <string name="user_profile_image">User Profile Image</string>
 </resources>

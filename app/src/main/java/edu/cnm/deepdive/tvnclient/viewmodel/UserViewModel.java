@@ -75,6 +75,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
   }
 
   // TODO Add method to update current user profile
+
   // TODO Add method to retrieve a specified user profile
 
   /**
