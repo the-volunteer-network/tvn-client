@@ -42,49 +42,50 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     opportunities = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
-    fetchAll();
+    fetchAllOrganizations();
   }
 
-  public LiveData<List<Organization>> getAllOrganizations() {
-    throwable.setValue(null);
-    Disposable disposable = organizationRepository
+  public void fetchAllOrganizations() {
+    throwable.postValue(null);
+    organizationRepository
         .getAll()
         .subscribe(
-            value -> organizations.postValue(value),
-            throwable -> postThrowable(throwable)
+            (orgs) -> organizations.postValue(orgs),
+            (throwable) -> postThrowable(throwable),
+            pending
         );
-    pending.add(disposable);
+  }
+
+  public LiveData<List<Organization>> getOrganizations() {
     return organizations;
   }
 
-  public LiveData<List<Organization>> findOrganizations() {
+
+  public void findOrganizations(String keyword) {
     throwable.setValue(null);
     Disposable disposable = organizationRepository
-        .getAll()
+        .searchOrganizations(keyword)
         .subscribe(
             organizations::postValue,
             this::postThrowable
         );
     pending.add(disposable);
-    return organizations;
-  }
-  public void getOrganization (UUID id) {
-    throwable.setValue(null);
-    organizationId.setValue(id);
-    organizationRepository
-        .getOrganization(id)
-        .subscribe(
-            (org) -> organization.postValue(org),
-            (throwable) -> postThrowable(throwable)
-        );
   }
 
-  public void addOrganization( Organization org) {
+  public LiveData<Organization> getOrganization() {
+    return organization;
+  }
+
+  public void addOrganization(Organization org) {
     throwable.setValue(null);
     organizationRepository
         .addOrganization(org)
         .subscribe(
-            (orga) -> organization.postValue(orga ),
+            (orga) -> {
+              organization.postValue(orga);
+              organizationId.postValue(orga.getId());
+              fetchAllOrganizations(); // TODO This is the approach where the list of organizations is refreshed if we change 1 organization
+            },
             (throwable) -> postThrowable(throwable),
             pending
         );
@@ -94,7 +95,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     return organizationId;
   }
 
-/*  public void setOrganizationId(UUID id) {
+  public void fetchOrganization(UUID id) {
     throwable.setValue(null);
     organizationId.setValue(id);
     organizationRepository
@@ -104,15 +105,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             (throwable) -> postThrowable(throwable),
             pending
         );
-  }*/
+  }
 
-  public void modifyOrganizationId(UUID id, Organization org) {
+  public void modifyOrganization(UUID id, Organization org) {
     throwable.setValue(null);
     organizationId.setValue(id);
     organizationRepository
         .modifyOrganization(id, org)
         .subscribe(
-            (orga) -> organization.postValue(orga),
+//            (orga) -> organization.postValue(orga),
+            () -> {
+              /* TODO Decide if there is a necessary action after successful modification*/
+              fetchAllOrganizations(); // TODO This is the approach where the list of organizations is refreshed if we change 1 organization
+            },
             (throwable) -> postThrowable(throwable),
             pending
         );
@@ -124,20 +129,20 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     organizationRepository
         .deleteOrganization(id)
         .subscribe(
-            () -> {/* Do nothing */},
+            () -> fetchAllOrganizations(),
+            // TODO This is the approach where the list of organizations is refreshed if we change 1 organization
             (throwable) -> postThrowable(throwable),
             pending
         );
   }
 
+  // TODO Decide if you want to modify one prop at time? If not, remove the 2 below.
   public void getOrganizationName(UUID id) {
     throwable.setValue(null);
     organizationId.setValue(id);
     organizationRepository
         .getOrganizationName(id)
         .subscribe(
-
-
 
         );
   }
@@ -154,62 +159,74 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   }
 
 
-
-  public LiveData<List<Opportunity>> getAllOpportunities() {
-    throwable.setValue(null);
+  public void fetchAllOpportunities(UUID organizationId) {
+    throwable.postValue(null);
     Disposable disposable = organizationRepository
-        .getAll()
+        .getAllOpportunities(organizationId)
         .subscribe(
-
-
+            (opps) -> opportunities.postValue(opps),
+            (throwable) -> postThrowable(throwable),
+            pending
         );
+  }
+
+  public LiveData<List<Opportunity>> getOpportunities() {
     return opportunities;
   }
 
-  public void  addOpportunity( UUID orgId, Opportunity opp) {
-   throwable.setValue(null);
-
-   organizationRepository
-       .addOpportunity(orgId, opp)
-       .subscribe(
-           (opport) -> opportunity.postValue(opport),
-           (throwable)->postThrowable(throwable),
-           pending
-       );
-
-
+  public void addOpportunity(UUID orgId, Opportunity opp) {
+    throwable.setValue(null);
+    organizationRepository
+        .addOpportunity(orgId, opp)
+        .subscribe(
+            (opport) -> {
+              opportunity.postValue(opport);
+              opportunityId.postValue(opport.getId());
+              fetchAllOpportunities(orgId);
+            },
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
   }
 
- /* public void getOpportunity(UUID oppId, UUID orgId) {
+  public LiveData<Opportunity> getOpportunity() {
+    return opportunity;
+  }
+
+  public void fetchOpportunity(UUID oppId, UUID orgId) {
     throwable.setValue(null);
     opportunityId.setValue(oppId);
     organizationRepository
-        .getOpportunity(oppId,orgId)
+        .getOpportunity(oppId, orgId)
         .subscribe(
             (opp) -> opportunity.postValue(opp),
             (throwable) -> postThrowable(throwable),
             pending
         );
-  }*/
+  }
 
-  public void modifyOpportunity(UUID orgId,UUID oppId, Opportunity opp) {
+  public void modifyOpportunity(UUID orgId, UUID oppId, Opportunity opp) {
     throwable.setValue(null);
     opportunityId.setValue(oppId);
     organizationRepository
-        .modifyOpportunity(orgId,oppId, opp)
+        .modifyOpportunity(orgId, oppId, opp)
         .subscribe(
-            (oppo) -> opportunity.postValue(oppo),
+            (oppo) -> {
+              opportunity.postValue(oppo);
+              fetchAllOpportunities(orgId);
+            },
             (throwable) -> postThrowable(throwable),
             pending
         );
   }
+// TODO If we don't want to do anything upon a successful result (above), then change repository method to return completable
 
   public void deleteOpportunity(UUID orgId, UUID oppId) {
     throwable.setValue(null);
     organizationRepository
         .deleteOpportunity(orgId, oppId)
         .subscribe(
-            () -> {/* Do nothing */},
+            () -> fetchAllOpportunities(orgId),
             (throwable) -> postThrowable(throwable),
             pending
         );
@@ -219,16 +236,6 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     return throwable;
   }
 
-  public void fetchAll() {
-    throwable.setValue(null);
-    organizationRepository
-        .getAll()
-        .subscribe(
-            (orgs) -> organizations.postValue(orgs),
-            (throwable) -> postThrowable(throwable),
-            pending
-        );
-  }
 
   @Override
   public void onStop(@NonNull LifecycleOwner owner) {

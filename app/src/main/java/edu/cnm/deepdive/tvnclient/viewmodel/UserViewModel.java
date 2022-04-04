@@ -12,29 +12,39 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import edu.cnm.deepdive.tvnclient.model.dto.User;
 import edu.cnm.deepdive.tvnclient.service.GoogleSignInService;
+import edu.cnm.deepdive.tvnclient.service.UserRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import java.util.UUID;
 
 /**
- * Provide data to the view so the ew view can display those data on screen,
- * Allows the user to interact with data and change the data.
+ * Provide data to the view so the ew view can display those data on screen, Allows the user to
+ * interact with data and change the data.
  */
-public class UserViewModel extends AndroidViewModel implements DefaultLifecycleObserver{
+public class UserViewModel extends AndroidViewModel implements DefaultLifecycleObserver {
 
   private final GoogleSignInService signInService;
+  private final UserRepository userRepository;
   private final MutableLiveData<GoogleSignInAccount> account;
+  private final MutableLiveData<User> currentUser;
+  private final MutableLiveData<UUID> userId; // TODO This will be important when we want to look at OTHER user profiles
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
   /**
    * Initializes this instance of LoginViewModel.
+   *
    * @param application
    */
   public UserViewModel(@NonNull Application application) {
     super(application);
     signInService = GoogleSignInService.getInstance();
+    userRepository = new UserRepository(application);
     account = new MutableLiveData<>();
+    currentUser = new MutableLiveData<>();
+    userId = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
     refresh();
@@ -42,14 +52,34 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
 
   /**
    * Observes the Google sign-in process and notifies if any changes occurs.
+   *
    * @return
    */
   public LiveData<GoogleSignInAccount> getAccount() {
     return account;
   }
 
+  public MutableLiveData<User> getCurrentUser() {
+    return currentUser;
+  }
+
+  public void fetchCurrentUser() {
+    throwable.setValue(null);
+    userRepository
+        .getProfile()
+        .subscribe(
+            (user) -> currentUser.postValue(user),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
+
+  // TODO Add method to update current user profile
+  // TODO Add method to retrieve a specified user profile
+
   /**
    * Notifies if an error occurs during the process.
+   *
    * @return
    */
   public LiveData<Throwable> getThrowable() {
@@ -73,6 +103,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
 
   /**
    * Complete the sign-in process and display the completion on screen.
+   *
    * @param result
    */
   public void completeSignIn(ActivityResult result) {
@@ -88,6 +119,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
 
   /**
    * Launches the sign-in process and display it on screen.
+   *
    * @param launcher
    */
   public void startSignIn(ActivityResultLauncher<Intent> launcher) {
@@ -95,7 +127,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
   }
 
   /**
-   *  Provides the user the sign-out option and display the sign-out on screen.
+   * Provides the user the sign-out option and display the sign-out on screen.
    */
   public void signOut() {
     throwable.setValue(null);
