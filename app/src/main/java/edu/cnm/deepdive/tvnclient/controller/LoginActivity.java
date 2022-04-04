@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.snackbar.Snackbar;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.ActivityLoginBinding;
-import edu.cnm.deepdive.tvnclient.viewmodel.LoginViewModel;
+import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
 /**
  * Provides user authentication and sets the login activity screen.
@@ -20,14 +20,14 @@ import edu.cnm.deepdive.tvnclient.viewmodel.LoginViewModel;
 public class LoginActivity extends AppCompatActivity {
 
   private ActivityLoginBinding binding;
-  private LoginViewModel viewModel;
+  private UserViewModel viewModel;
   private ActivityResultLauncher<Intent> launcher;
   private boolean silent;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+    viewModel = new ViewModelProvider(this).get(UserViewModel.class);
     getLifecycle().addObserver(viewModel);
     launcher = registerForActivityResult(new StartActivityForResult(), viewModel::completeSignIn);
     silent = true;

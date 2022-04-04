@@ -13,26 +13,28 @@ public class UserRepository {
   private final GoogleSignInService signInService;
 
 
-  public  UserRepository(Context context) {
+  public UserRepository(Context context) {
     this.context = context;
-   serviceProxy = TVNServiceProxy.getInstance();
+    serviceProxy = TVNServiceProxy.getInstance();
     signInService = GoogleSignInService.getInstance();
   }
- public Single<User> getProfile(){
+
+  public Single<User> getProfile() {
     return signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.getCurrentUser(token));
 
- }
- public  Single<User> updateProfile(User user) {
+  }
+
+  public Single<User> updateProfile(User user) {
 /*
     return  signInService
         .refreshBearerToken()
         .observeOn(Schedulers.io())
         .flatMap((token) -> serviceProxy.)
 */
-   return null; // TODO Finish when endpoint is available.
- }
+    return null; // TODO Finish when endpoint is available.
+  }
 
 }
