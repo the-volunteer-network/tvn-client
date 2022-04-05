@@ -1,9 +1,12 @@
 package edu.cnm.deepdive.tvnclient.service;
 
 import android.content.Context;
+import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.model.dto.User;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.UUID;
 
 public class UserRepository {
 
@@ -20,12 +23,24 @@ public class UserRepository {
   }
 
   public Single<User> getProfile() {
-    return signInService
-        .refreshBearerToken()
-        .observeOn(Schedulers.io())
+    return refreshToken()
         .flatMap((token) -> serviceProxy.getCurrentUser(token));
 
   }
+
+  public Single<User> modifyProfile(User user) {
+    return refreshToken()
+        .flatMap((token) -> serviceProxy.modifyCurrentUser(user, token));
+
+  }
+
+  public Completable modifyCurrentUser(UUID organizationId, Organization organization) {
+    return refreshToken()
+        .flatMap(
+            (token) -> serviceProxy.modifyOrganization(organizationId, organization, token)) //;
+        .ignoreElement();
+  }
+
 
   public Single<User> updateProfile(User user) {
 /*
@@ -36,5 +51,13 @@ public class UserRepository {
 */
     return null; // TODO Finish when endpoint is available.
   }
+
+  private Single<String> refreshToken() {
+    return signInService
+        .refreshBearerToken()
+        .observeOn(Schedulers.io());
+
+  }
+
 
 }
