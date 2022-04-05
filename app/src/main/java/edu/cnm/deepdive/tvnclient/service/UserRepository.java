@@ -28,6 +28,12 @@ public class UserRepository {
 
   }
 
+  public Single<User> modifyProfile(User user) {
+    return refreshToken()
+        .flatMap((token) -> serviceProxy.modifyCurrentUser(user, token));
+
+  }
+
   public Completable modifyCurrentUser(UUID organizationId, Organization organization) {
     return refreshToken()
         .flatMap(

@@ -64,7 +64,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
   }
 
   public void fetchCurrentUser() {
-    throwable.setValue(null);
+    throwable.postValue(null);
     userRepository
         .getProfile()
         .subscribe(
@@ -74,7 +74,16 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
         );
   }
 
-  // TODO Add method to update current user profile
+  public void modifyCurrentUser(User user) {
+    throwable.setValue(null);
+    userRepository
+        .modifyProfile(user)
+        .subscribe(
+            (u) -> currentUser.postValue(u),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
 
   // TODO Add method to retrieve a specified user profile
 
@@ -95,7 +104,10 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
     Disposable disposable = signInService
         .refresh()
         .subscribe(
-            account::postValue,
+            (acct) -> {
+              account.postValue(acct);
+              fetchCurrentUser();
+            },
             (throwable) -> account.postValue(null)
 
         );
