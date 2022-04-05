@@ -8,4 +8,5 @@
   <string name="organization_drawer_menu_label">Organization</string>
   <string name="schedule_drawer_menu_label">Schedule</string>
   <string name="search_organizations_drawer_menu_label">Search Organizations</string>
+  <string name="my_opportunities_drawer_menu_label">My opportunities</string>
 </resources>

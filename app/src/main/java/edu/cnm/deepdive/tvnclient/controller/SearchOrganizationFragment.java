@@ -8,13 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
+import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
 public class SearchOrganizationFragment extends Fragment {
 
   private FragmentSearchOrganizationBinding binding;
   private OrganizationViewModel organizationViewModel;
+
+  private SearchOrganizationAdapter adapter;
 
   @Nullable
   @Override
@@ -34,9 +38,12 @@ public class SearchOrganizationFragment extends Fragment {
     organizationViewModel
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
+          adapter = new SearchOrganizationAdapter(getContext(), orgs);
           // TODO create an instance of recyclerview adapter, pass orgs to it,
           // TODO Attach adapter to recyclerView.
         });
+    binding.organizations.setAdapter(adapter);
+
 
   }
 

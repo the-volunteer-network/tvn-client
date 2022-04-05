@@ -17,7 +17,7 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
   private final LayoutInflater layoutInflater;
 
 
-  public SearchOrganizationAdapter(Context context, List<Organization> organizations, LayoutInflater inflater) {
+  public SearchOrganizationAdapter(Context context, List<Organization> organizations) {
     this.organizations = organizations;
 
     layoutInflater = LayoutInflater.from(context);
