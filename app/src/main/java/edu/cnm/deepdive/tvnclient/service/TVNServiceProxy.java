@@ -71,7 +71,9 @@ public interface TVNServiceProxy {
 
   @GET("users/me")
   Single<User> getCurrentUser(@Header("Authorization") String bearerToken);
-// TODO Add proxy method for updating user profile when available.
+
+  @PUT("users/me")
+  Single<User> modifyCurrentUser(@Body User user, @Header("Authorization") String bearertoken);
 
   @GET("users/me/favorites")
   Single<List<Organization>> getFavorites(@Header("Authorization") String bearerToken);
