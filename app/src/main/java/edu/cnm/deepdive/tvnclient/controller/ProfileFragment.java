@@ -20,6 +20,7 @@ import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 public class ProfileFragment extends Fragment implements TextWatcher {
 
   private UserViewModel userViewModel;
+  // TODO In order to access a User's owned, favorite, volunteered organizations, need to provide in appropriate view model.
   private FragmentProfileBinding binding;
   private User user;
 
@@ -51,6 +52,7 @@ public class ProfileFragment extends Fragment implements TextWatcher {
           // TODO Populate other fields based on the user object
           checkSubmissionConditions();
         });
+    // TODO Get and observe live data containing the list of user's organizations; observe the live data to populate a recycler view adapter
   }
 
   // TODO Add methods that allows user to modify the aspects of their profile in one action
