@@ -13,7 +13,7 @@
     android:inputType="text"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/search_button"/>
+    app:layout_constraintEnd_toStartOf="@id/map"/>
   <ImageButton
     android:id="@+id/search_button"
     android:layout_width="wrap_content"
@@ -24,6 +24,18 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="@id/search_bar"/>
 
+  <com.google.android.gms.maps.MapView
+    android:id="@+id/map"
+    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:contextClickable="true"
+    android:padding="@dimen/half_dynamic_spacing"
+    android:layout_margin="@dimen/half_dynamic_spacing"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/organizations"
+    app:layout_constraintTop_toBottomOf="@id/search_bar"/>
+
 
 
 
@@ -33,7 +45,7 @@
     android:layout_height="0dp"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintTop_toBottomOf="@id/search_bar"
+    app:layout_constraintTop_toBottomOf="@id/map"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
