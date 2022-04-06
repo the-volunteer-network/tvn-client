@@ -17,4 +17,7 @@
   <string name="location_label">Location</string>
   <string name="email_label">Email</string>
   <string name="phone_number_label">Phone Number</string>
+  <string name="organization_name_label">Organization Name</string>
+  <string name="about_label">About</string>
+  <string name="mission_label">Mission</string>
 </resources>
