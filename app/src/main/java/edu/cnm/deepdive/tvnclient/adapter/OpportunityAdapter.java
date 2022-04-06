@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.tvnclient.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,10 @@ public class OpportunityAdapter extends RecyclerView.Adapter<Holder> {
   private final List<Opportunity> opportunities;
   private final LayoutInflater inflater;
 
-  public OpportunityAdapter(
-      List<Opportunity> opportunities, LayoutInflater inflater) {
+  public OpportunityAdapter( Context context,
+      List<Opportunity> opportunities) {
     this.opportunities = opportunities;
-    this.inflater = inflater;
+    inflater = LayoutInflater.from(context);
   }
 
   @NonNull
