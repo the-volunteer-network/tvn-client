@@ -17,11 +17,10 @@ android {
 
         String propertyFile = "$projectDir/../../../services/tvn.properties"
 
-        resValue "string", "app_name", rootProject.name
 
         buildConfigField 'String', 'BASE_URL', quoted(getProperty(propertyFile, 'base_url'))
         buildConfigField 'String', 'CLIENT_ID', quoted(getProperty(propertyFile, 'client_id'))
-        resValue 'String', 'api_key', quoted(getProperty(propertyFile, 'api_key'))
+        resValue 'string', 'api_key', getProperty("$projectDir/../../../services/tvn.properties", 'api_key')
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -67,6 +66,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:$navigationVersion"
     implementation "androidx.navigation:navigation-ui:$navigationVersion"
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     //Lifecycle (LiveData and ViewModel)
     def lifecycleVersion = '2.4.1'
@@ -108,6 +108,8 @@ dependencies {
     //Map
 
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.libraries.places:places:2.6.0'
 
 }
 
