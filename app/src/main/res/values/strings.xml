@@ -14,4 +14,7 @@
   <string name="user_organizations_list">Organizations</string>
   <string name="volunteer_skills_label">Volunteer Skills</string>
   <string name="organizations_label">Organizations</string>
+  <string name="location_label">Location</string>
+  <string name="email_label">Email</string>
+  <string name="phone_number_label">Phone Number</string>
 </resources>

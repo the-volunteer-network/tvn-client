@@ -31,6 +31,9 @@ public class ProfileFragment extends Fragment implements TextWatcher {
     binding = FragmentProfileBinding.inflate(inflater, container, false);
     binding.update.setOnClickListener((v) -> {
       user.setDisplayName(binding.displayName.getText().toString().trim());
+      user.setEmail(binding.email.getText().toString().trim());
+      user.setLocation(binding.location.getText().toString().trim());
+      user.setPhoneNumber(binding.phone.getText().toString().trim());
       // TODO Set other properties of user from view objects on screen (more fields to edit; email, phone, etc...)
       userViewModel.modifyCurrentUser(user);
     });
