@@ -12,4 +12,6 @@
   <string name="user_skills_label">User Skills</string>
   <string name="user_profile_image">User Profile Image</string>
   <string name="user_organizations_list">Organizations</string>
+  <string name="volunteer_skills_label">Volunteer Skills</string>
+  <string name="organizations_label">Organizations</string>
 </resources>
