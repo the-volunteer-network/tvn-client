@@ -12,11 +12,13 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.model.dto.User;
 import edu.cnm.deepdive.tvnclient.service.GoogleSignInService;
 import edu.cnm.deepdive.tvnclient.service.UserRepository;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -30,6 +32,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
   private final MutableLiveData<GoogleSignInAccount> account;
   private final MutableLiveData<User> currentUser;
   private final MutableLiveData<UUID> userId; // TODO This will be important when we want to look at OTHER user profiles
+  private final MutableLiveData<List<Organization>> organizations;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -45,6 +48,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
     account = new MutableLiveData<>();
     currentUser = new MutableLiveData<>();
     userId = new MutableLiveData<>();
+    organizations = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
     refresh();
@@ -87,6 +91,22 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
 
   // TODO Add method to retrieve a specified user profile
 
+
+  public MutableLiveData<List<Organization>> getOrganizations() {
+    return organizations;
+  }
+
+  public void fetchOrganizations() {
+    throwable.postValue(null);
+    userRepository
+        .getMyOrganizations()
+        .subscribe(
+            (orgs) -> organizations.postValue(orgs),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
+
   /**
    * Notifies if an error occurs during the process.
    *
@@ -107,6 +127,7 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
             (acct) -> {
               account.postValue(acct);
               fetchCurrentUser();
+              fetchOrganizations();
             },
             (throwable) -> account.postValue(null)
 

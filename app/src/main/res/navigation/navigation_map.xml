@@ -5,6 +5,19 @@
   android:id="@+id/navigation_map"
   app:startDestination="@id/navigation_profile">
 
+  <action
+    android:id="@+id/explain_permissions"
+    app:destination="@id/navigation_permissions_explanation">
+
+    <argument
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+    <argument
+      android:name="permissions_to_request"
+      app:argType="string[]"/>
+
+  </action>
+
   <fragment
     android:id="@+id/navigation_profile"
     android:name="edu.cnm.deepdive.tvnclient.controller.ProfileFragment"
@@ -28,5 +41,18 @@
     android:name="edu.cnm.deepdive.tvnclient.controller.OpportunityFragment"
     tools:layout="@layout/fragment_opportunity"
     android:label="My opportunities"/>
+
+  <dialog
+    android:id="@+id/navigation_permissions_explanation"
+    android:name="edu.cnm.deepdive.tvnclient.controller.PermissionsExplanationFragment">
+
+    <argument
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+    <argument
+      android:name="permissions_to_request"
+      app:argType="string[]"/>
+
+  </dialog>
 
 </navigation>

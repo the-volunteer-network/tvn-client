@@ -3,7 +3,6 @@ package edu.cnm.deepdive.tvnclient.controller;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentProfileBinding;
-import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import edu.cnm.deepdive.tvnclient.model.dto.User;
-import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
 public class ProfileFragment extends Fragment implements TextWatcher {
 
   private UserViewModel userViewModel;
+  // TODO In order to access a User's owned, favorite, volunteered organizations, need to provide in appropriate view model.
   private FragmentProfileBinding binding;
   private User user;
 
@@ -30,6 +28,9 @@ public class ProfileFragment extends Fragment implements TextWatcher {
     binding = FragmentProfileBinding.inflate(inflater, container, false);
     binding.update.setOnClickListener((v) -> {
       user.setDisplayName(binding.displayName.getText().toString().trim());
+      user.setEmail(binding.email.getText().toString().trim());
+      user.setLocation(binding.location.getText().toString().trim());
+      user.setPhoneNumber(binding.phone.getText().toString().trim());
       // TODO Set other properties of user from view objects on screen (more fields to edit; email, phone, etc...)
       userViewModel.modifyCurrentUser(user);
     });
@@ -51,6 +52,7 @@ public class ProfileFragment extends Fragment implements TextWatcher {
           // TODO Populate other fields based on the user object
           checkSubmissionConditions();
         });
+    // TODO Get and observe live data containing the list of user's organizations; observe the live data to populate a recycler view adapter
   }
 
   // TODO Add methods that allows user to modify the aspects of their profile in one action

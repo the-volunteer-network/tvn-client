@@ -12,4 +12,15 @@
   <string name="user_skills_label">User Skills</string>
   <string name="user_profile_image">User Profile Image</string>
   <string name="user_organizations_list">Organizations</string>
+  <string name="volunteer_skills_label">Volunteer Skills</string>
+  <string name="organizations_label">Organizations</string>
+  <string name="location_label">Location</string>
+  <string name="email_label">Email</string>
+  <string name="phone_number_label">Phone Number</string>
+  <string name="organization_name_label">Organization Name</string>
+  <string name="about_label">About</string>
+  <string name="mission_label">Mission</string>
+  <string name="permissions_dialog_title">Permissions needed</string>
+  <string name="access_fine_location_explanation">This app uses location information to show nearby organizations.</string>
+  <string name="access_coarse_location_explanation">This app uses location information to show nearby organizations.</string>
 </resources>
