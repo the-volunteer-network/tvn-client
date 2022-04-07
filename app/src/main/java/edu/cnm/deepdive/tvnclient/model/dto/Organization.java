@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.tvnclient.model.dto;
 
+import androidx.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import java.util.Date;
 import java.util.UUID;
@@ -25,7 +26,10 @@ public class Organization {
   private String mission;
 
   @Expose
-  private Date created ;
+  private Date created;
+
+  @Expose
+  private User owner;
 
   public UUID getId() {
     return id;
@@ -81,5 +85,33 @@ public class Organization {
 
   public void setCreated(Date created) {
     this.created = created;
+  }
+
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
+
+  @Override
+  public int hashCode() {
+    return (id != null) ? id.hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    boolean result;
+    if (obj == this) {
+      result = true;
+    } else if (obj instanceof Organization) {
+      Organization other = (Organization) obj;
+      result = id.equals(other.id);
+    } else {
+      result = false;
+    }
+
+    return result;
   }
 }

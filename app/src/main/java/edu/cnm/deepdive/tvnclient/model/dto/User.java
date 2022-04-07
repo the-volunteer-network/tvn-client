@@ -15,8 +15,6 @@ public class User {
   @Expose
   private String displayName;
 
-
-
   @Expose
   private String location;
 
