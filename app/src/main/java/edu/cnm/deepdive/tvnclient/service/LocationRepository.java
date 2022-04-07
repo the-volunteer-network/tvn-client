@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.location.Location;
 import android.os.Looper;
+import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
@@ -23,11 +26,19 @@ public class LocationRepository {
   private static Application context;
 
   private final FusedLocationProviderClient locationClient;
+  private final LocationRequest request;
+  private final MutableLiveData<Location> location;
 
-  private Callback callback;
+  private final Callback callback;
 
   private LocationRepository() {
     locationClient = LocationServices.getFusedLocationProviderClient(context);
+    location = new MutableLiveData<>();
+    request = LocationRequest.create();
+    request.setInterval(15000); // FIXME Read from constants or preferences.
+    request.setFastestInterval(5000); // FIXME Read from constants or preferences.
+    request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    callback = new Callback();
   }
 
   public static void setContext(Application context) {
@@ -38,55 +49,25 @@ public class LocationRepository {
     return InstanceHolder.INSTANCE;
   }
 
-  @SuppressLint("MissingPermission") // TODO request location permission from the user
-  public Single<Location> getLastLocation() {
-    return Single
-        .create((SingleOnSubscribe<Location>) (emitter) ->
-            locationClient
-                .getLastLocation()
-                .addOnSuccessListener((location) -> emitter.onSuccess(location))
-                .addOnFailureListener((throwable) -> emitter.onError(throwable))
-        )
-        .observeOn(Schedulers.io());
-
-  }
-
   @SuppressLint("MissingPermission")
-  public Observable<Location> getCurrentLocation() {
-    return Observable
-        .create((ObservableEmitter<Location> emitter) -> {
-          LocationRequest request = LocationRequest.create();
-          request.setInterval(15000); // FIXME Read from constants or preferences.
-          request.setFastestInterval(5000); // FIXME Read from constants or preferences.
-          request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-          LocationSettingsRequest settingsRequest = new LocationSettingsRequest.Builder()
-              .addLocationRequest(request)
-              .build();
-          SettingsClient client = LocationServices.getSettingsClient(context);
-          client
-              .checkLocationSettings(settingsRequest)
-              .addOnSuccessListener(
-                  (response) -> {/*  TODO use response to see what services are available*/})
-              .addOnFailureListener((throwable) -> emitter.onError(throwable));
-          callback = new Callback(emitter);
-          locationClient.requestLocationUpdates(request, callback, Looper.myLooper());
-
-        })
-        .observeOn(Schedulers.io());
+  public void start() {
+    locationClient.requestLocationUpdates(request, callback, Looper.myLooper());
   }
 
-  private static class Callback extends LocationCallback {
+  public void stop() {
+    locationClient.removeLocationUpdates(callback);
+  }
 
-    private final ObservableEmitter emitter;
+  public LiveData<Location> getLocation() {
+    return location;
+  }
 
-    private Callback(ObservableEmitter emitter) {
-      this.emitter = emitter;
-    }
+  private class Callback extends LocationCallback {
 
     @Override
     public void onLocationResult(LocationResult locationResult) {
       super.onLocationResult(locationResult);
-      emitter.onNext(locationResult.getLastLocation());
+      location.postValue(locationResult.getLastLocation());
     }
 
     @Override

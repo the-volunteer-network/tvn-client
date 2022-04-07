@@ -28,6 +28,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private OrganizationViewModel organizationViewModel;
   private LocationViewModel locationViewModel;
   private SearchOrganizationAdapter adapter;
+  private GoogleMap googleMap;
 
   @Nullable
   @Override
@@ -56,10 +57,13 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
           binding.organizations.setAdapter(adapter);
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+    getLifecycle().addObserver(locationViewModel);
     locationViewModel
         .getLocation()
         .observe( getViewLifecycleOwner(), (location) -> {
-          // TODO use location to update the map display.
+          LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+          CameraUpdate locationChange = CameraUpdateFactory.newLatLng(latLng);
+          googleMap.moveCamera(locationChange);
         });
   }
 
@@ -71,6 +75,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
 
   @Override
   public void onMapReady(@NonNull GoogleMap googleMap) {
+    this.googleMap = googleMap;
     LatLng start = new LatLng(35.691544, -105.944183);
     googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
     CameraUpdate initialSetting = CameraUpdateFactory.newLatLngZoom(start, 6);

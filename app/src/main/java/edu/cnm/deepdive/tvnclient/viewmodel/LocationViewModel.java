@@ -15,48 +15,25 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class LocationViewModel extends AndroidViewModel implements DefaultLifecycleObserver {
 
   private final LocationRepository locationRepository;
-  private final MutableLiveData<Location> location;
-  private final MutableLiveData<Throwable> throwable;
-  private final CompositeDisposable pending;
 
   public LocationViewModel(@NonNull Application application) {
     super(application);
     locationRepository = LocationRepository.getInstance();
-    location = new MutableLiveData<>();
-    throwable = new MutableLiveData<>();
-    pending = new CompositeDisposable();
-    subscribeToLocation();
   }
 
   public LiveData<Location> getLocation() {
-    return location;
-  }
-
-  public void subscribeToLocation() {
-    throwable.postValue(null);
-    locationRepository
-        .getCurrentLocation()
-        .subscribe(
-            (loc) -> location.postValue(loc),
-            (throwable) -> postThrowable(throwable),
-            () -> {
-            },
-            pending
-        );
-  }
-
-  public LiveData<Throwable> getThrowable() {
-    return throwable;
+    return locationRepository.getLocation();
   }
 
   @Override
-  public void onStop(@NonNull LifecycleOwner owner) {
-    DefaultLifecycleObserver.super.onStop(owner);
-    pending.clear();
+  public void onResume(@NonNull LifecycleOwner owner) {
+    DefaultLifecycleObserver.super.onResume(owner);
+    locationRepository.start();
   }
 
-  private void postThrowable(Throwable throwable) {
-    Log.e(getClass().getSimpleName(), throwable.getMessage(), throwable);
-    this.throwable.postValue(throwable);
+  @Override
+  public void onPause(@NonNull LifecycleOwner owner) {
+    locationRepository.stop();
+    DefaultLifecycleObserver.super.onPause(owner);
   }
 }
