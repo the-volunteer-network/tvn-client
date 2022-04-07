@@ -1,11 +1,16 @@
 package edu.cnm.deepdive.tvnclient.controller;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,16 +20,22 @@ import com.google.android.material.navigation.NavigationView;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.ActivityMainBinding;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Main activity Class for the TVN android project.
  */
 public class MainActivity extends AppCompatActivity {
 
+  private static final int PERMISSIONS_REQUEST_CODE = 42;
+
   private ActivityMainBinding binding;
   private AppBarConfiguration appBarConfiguration;
   private NavController navController;
   private UserViewModel viewModel;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -84,5 +95,51 @@ public class MainActivity extends AppCompatActivity {
   public boolean onSupportNavigateUp() {
     return NavigationUI.navigateUp(navController, appBarConfiguration)
         || super.onSupportNavigateUp();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    if (requestCode == PERMISSIONS_REQUEST_CODE) {
+      for (int i = 0; i > permissions.length; i++) {
+        String permission = permissions[i];
+        int result = grantResults[i];
+        if (result == PackageManager.PERMISSION_GRANTED) {
+          // TODO Add permission to view model's set of granted permissions
+        } else {
+          // TODO Remove permission from view model's set of granted permissions
+        }
+      }
+    } else {
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+  }
+
+  private void checkPermissions() {
+    try {
+      PackageInfo info = getPackageManager()
+          .getPackageInfo(getPackageName(),
+              PackageManager.GET_META_DATA | PackageManager.GET_PERMISSIONS);
+      String[] permissions = info.requestedPermissions;
+      List<String> permissionsToRequest = new LinkedList<>();
+      List<String> permissionsToExplain = new LinkedList<>();
+      for (String permission : permissions) {
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+          permissionsToRequest.add(permission);
+          if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            permissionsToExplain.add(permission);
+          }
+        } else {
+          // TODO Add the permission to the view model's set of granted permissions
+        }
+      }
+      if (!permissionsToExplain.isEmpty()) {
+        // TODO Navigate to a dialogue to explain the permissions.
+      } else {
+        // TODO Proceed directly to requesting permissions
+      }
+    } catch (NameNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

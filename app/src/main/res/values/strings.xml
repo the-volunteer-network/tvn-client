@@ -20,4 +20,5 @@
   <string name="organization_name_label">Organization Name</string>
   <string name="about_label">About</string>
   <string name="mission_label">Mission</string>
+  <string name="permissions_dialog_title">Permissions needed</string>
 </resources>
