@@ -10,7 +10,10 @@
     app:destination="@id/navigation_permissions_explanation">
 
     <argument
-      android:name="permissions"
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+    <argument
+      android:name="permissions_to_request"
       app:argType="string[]"/>
 
   </action>
@@ -44,7 +47,10 @@
     android:name="edu.cnm.deepdive.tvnclient.controller.PermissionsExplanationFragment">
 
     <argument
-      android:name="permissions"
+      android:name="permissions_to_explain"
+      app:argType="string[]"/>
+    <argument
+      android:name="permissions_to_request"
       app:argType="string[]"/>
 
   </dialog>

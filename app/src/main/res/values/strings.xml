@@ -21,4 +21,6 @@
   <string name="about_label">About</string>
   <string name="mission_label">Mission</string>
   <string name="permissions_dialog_title">Permissions needed</string>
+  <string name="access_fine_location_explanation">This app uses location information to show nearby organizations.</string>
+  <string name="access_coarse_location_explanation">This app uses location information to show nearby organizations.</string>
 </resources>

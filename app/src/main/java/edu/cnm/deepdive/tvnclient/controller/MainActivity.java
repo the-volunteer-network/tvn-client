@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,25 +17,27 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.google.android.material.navigation.NavigationView;
+import edu.cnm.deepdive.tvnclient.NavigationMapDirections;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.ActivityMainBinding;
+import edu.cnm.deepdive.tvnclient.viewmodel.PermissionsViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Main activity Class for the TVN android project.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+    PermissionsExplanationFragment.OnAcknowledgeListener {
 
   private static final int PERMISSIONS_REQUEST_CODE = 42;
 
   private ActivityMainBinding binding;
   private AppBarConfiguration appBarConfiguration;
   private NavController navController;
-  private UserViewModel viewModel;
+  private UserViewModel userViewModel;
+  private PermissionsViewModel permissionsViewModel;
 
 
   @Override
@@ -44,15 +47,17 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(binding.getRoot());
     setSupportActionBar(binding.toolbar);
-    appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_profile, R.id.navigation_organization, R.id.navigation_opportunity, R.id.navigation_search_organization)
+    appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_profile,
+        R.id.navigation_organization, R.id.navigation_opportunity,
+        R.id.navigation_search_organization)
         .setOpenableLayout(binding.drawerLayout)
         .build();
     navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
     NavigationUI.setupWithNavController(binding.navView, navController);
-    viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-    viewModel
+    userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+    userViewModel
         .getCurrentUser()
         .observe(this, (user) -> {
           if (user != null) {
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
           }
 
         });
-    viewModel
+    userViewModel
         .getAccount()
         .observe(this, (account) -> {
           if (account != null) {
@@ -71,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
           }
         });
+    permissionsViewModel = new ViewModelProvider(this).get(PermissionsViewModel.class);
+    permissionsViewModel
+        .getPermissions()
+        .observe(this, (permissions) -> Log.d(getClass().getSimpleName(), permissions.toString()));
+    checkPermissions();
   }
 
   @Override
@@ -84,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     boolean handled;
     if (item.getItemId() == R.id.sign_out) {
       handled = true;
-      viewModel.signOut();
+      userViewModel.signOut();
     } else {
       handled = super.onOptionsItemSelected(item);
     }
@@ -105,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
         String permission = permissions[i];
         int result = grantResults[i];
         if (result == PackageManager.PERMISSION_GRANTED) {
-          // TODO Add permission to view model's set of granted permissions
+          permissionsViewModel.add(permission);
         } else {
-          // TODO Remove permission from view model's set of granted permissions
+          permissionsViewModel.remove(permission);
         }
       }
     } else {
@@ -124,22 +134,30 @@ public class MainActivity extends AppCompatActivity {
       List<String> permissionsToRequest = new LinkedList<>();
       List<String> permissionsToExplain = new LinkedList<>();
       for (String permission : permissions) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, permission)
+            != PackageManager.PERMISSION_GRANTED) {
           permissionsToRequest.add(permission);
           if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
             permissionsToExplain.add(permission);
           }
         } else {
-          // TODO Add the permission to the view model's set of granted permissions
+          permissionsViewModel.add(permission);
         }
       }
       if (!permissionsToExplain.isEmpty()) {
-        // TODO Navigate to a dialogue to explain the permissions.
-      } else {
-        // TODO Proceed directly to requesting permissions
+        navController.navigate(NavigationMapDirections.explainPermissions(
+            permissionsToExplain.toArray(new String[0]),
+            permissionsToRequest.toArray(new String[0])));
+      } else if (!permissionsToRequest.isEmpty()) {
+        onAcknowledge(permissionsToRequest.toArray(new String[0]));
       }
     } catch (NameNotFoundException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public void onAcknowledge(String[] permissions) {
+    ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_CODE);
   }
 }
