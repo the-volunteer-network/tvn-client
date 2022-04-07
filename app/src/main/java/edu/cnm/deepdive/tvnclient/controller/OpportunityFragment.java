@@ -38,8 +38,9 @@ public class OpportunityFragment extends Fragment {
         .getOpportunities()
         .observe(getViewLifecycleOwner(), (opps) -> {
           adapter = new OpportunityAdapter(getContext(), opps);
+          binding.opportunities.setAdapter(adapter);
+
         });
-    binding.opportunities.setAdapter(adapter);
   }
 
   @Override
