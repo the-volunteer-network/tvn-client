@@ -10,7 +10,8 @@
   android:focusable="true"
   android:layout_margin="@dimen/half_static_spacing"
   android:padding="@dimen/half_static_spacing"
-  app:cardCornerRadius="@dimen/half_dynamic_spacing">
+  app:cardCornerRadius="@dimen/half_dynamic_spacing"
+  app:cardElevation="@dimen/half_dynamic_spacing">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -20,22 +21,22 @@
 
     <TextView
       android:id="@+id/organization_name"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_static_spacing"
-      android:text="Doctors without Borders"
+      tools:text="Doctors without Borders"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintBottom_toTopOf="@id/description"/>
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
       android:id="@+id/description"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:text="Our purpose: AL!VE serves to enhance and sustain the spirit of volunteering by fostering collaboration and networking, promoting professional development, and providing advocacy for leaders in community engagement."
-      android:maxLines="3"
-      android:ellipsize="end"
-      app:layout_constraintTop_toTopOf="@id/organization_name"/>
-
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/half_static_spacing"
+      tools:text="Our purpose: AL!VE serves to enhance and sustain the spirit of volunteering by fostering collaboration and networking, promoting professional development, and providing advocacy for leaders in community engagement."
+      app:layout_constraintTop_toBottomOf="@id/organization_name"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
 
 
   </androidx.constraintlayout.widget.ConstraintLayout>

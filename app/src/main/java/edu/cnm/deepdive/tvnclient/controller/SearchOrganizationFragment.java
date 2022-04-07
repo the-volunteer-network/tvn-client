@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,12 +14,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
+import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
-import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
+import java.util.List;
 
 public class SearchOrganizationFragment extends Fragment implements OnMapReadyCallback {
 
@@ -29,6 +30,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private LocationViewModel locationViewModel;
   private SearchOrganizationAdapter adapter;
   private GoogleMap googleMap;
+  private List<Organization> organizations;
 
   @Nullable
   @Override
@@ -51,20 +53,35 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     organizationViewModel
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
+          organizations = orgs;
           adapter = new SearchOrganizationAdapter(getContext(), orgs);
           // TODO create an instance of recyclerview adapter, pass orgs to it,
           // TODO Attach adapter to recyclerView.
           binding.organizations.setAdapter(adapter);
+          showOrganizations();
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
     getLifecycle().addObserver(locationViewModel);
     locationViewModel
         .getLocation()
-        .observe( getViewLifecycleOwner(), (location) -> {
+        .observe(getViewLifecycleOwner(), (location) -> {
           LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
           CameraUpdate locationChange = CameraUpdateFactory.newLatLng(latLng);
           googleMap.moveCamera(locationChange);
         });
+  }
+
+  private void showOrganizations() {
+    if (organizations != null && googleMap != null) {
+      googleMap.clear();
+      for (Organization org : organizations) {
+        LatLng location = new LatLng(org.getLatitude(), org.getLongitude());
+        googleMap.addMarker(new MarkerOptions()
+            .title(org.getName())
+            .position(location)
+        );
+      }
+    }
   }
 
   @Override
@@ -83,6 +100,6 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
 //    googleMap.getUiSettings().isMyLocationButtonEnabled();
     googleMap.getUiSettings().setZoomControlsEnabled(true);
 //    googleMap.getUiSettings().
-
+    showOrganizations();
   }
 }

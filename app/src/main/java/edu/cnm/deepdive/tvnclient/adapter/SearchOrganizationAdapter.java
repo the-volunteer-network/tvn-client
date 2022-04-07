@@ -27,29 +27,34 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
   @NonNull
   @Override
   public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    ItemSearchBinding binding= ItemSearchBinding.inflate(layoutInflater);
+    ItemSearchBinding binding = ItemSearchBinding.inflate(layoutInflater, parent, false);
     return new Holder(binding);
   }
 
   @Override
   public void onBindViewHolder(@NonNull Holder holder, int position) {
-
+    holder.bind(position);
   }
 
   @Override
   public int getItemCount() {
-    return 0;
+    return organizations.size();
   }
-  class Holder extends RecyclerView.ViewHolder {
-    private ItemSearchBinding binding;
 
-    public Holder(@NonNull  ItemSearchBinding binding) {
+  class Holder extends RecyclerView.ViewHolder {
+
+    private final ItemSearchBinding binding;
+
+    public Holder(@NonNull ItemSearchBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
 
     }
-    public void bind (int position) {
+
+    public void bind(int position) {
       Organization organization = organizations.get(position);
+      binding.organizationName.setText(organization.getName());
+//      binding.description.setText(organization.getAbout());
 
     }
   }
