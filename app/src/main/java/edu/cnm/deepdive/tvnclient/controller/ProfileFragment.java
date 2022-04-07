@@ -21,6 +21,7 @@ public class ProfileFragment extends Fragment implements TextWatcher {
   private FragmentProfileBinding binding;
   private User user;
 
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

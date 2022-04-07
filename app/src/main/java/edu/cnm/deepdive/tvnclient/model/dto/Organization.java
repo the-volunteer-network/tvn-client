@@ -26,6 +26,12 @@ public class Organization {
   private String mission;
 
   @Expose
+  private double latitude;
+
+  @Expose
+  private double longitude;
+
+  @Expose
   private Date created;
 
   @Expose
@@ -77,6 +83,22 @@ public class Organization {
 
   public void setMission(String mission) {
     this.mission = mission;
+  }
+
+  public double getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(double latitude) {
+    this.latitude = latitude;
+  }
+
+  public double getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(double longitude) {
+    this.longitude = longitude;
   }
 
   public Date getCreated() {
