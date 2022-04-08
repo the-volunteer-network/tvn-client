@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements
     setContentView(binding.getRoot());
     setSupportActionBar(binding.toolbar);
     appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_profile,
-        R.id.navigation_organization, R.id.navigation_opportunity,
+         R.id.navigation_opportunity,
         R.id.navigation_search_organization)
         .setOpenableLayout(binding.drawerLayout)
         .build();
