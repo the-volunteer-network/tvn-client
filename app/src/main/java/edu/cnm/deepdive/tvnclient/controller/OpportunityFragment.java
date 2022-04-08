@@ -31,10 +31,8 @@ public class OpportunityFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     binding = FragmentOpportunityBinding.inflate(inflater,container, false);
-/*
-    binding.spinnerOrganizations.setVisibility(View.VISIBLE);
-    binding.spinnerOrganizations.getDropDownWidth();
-*/
+    binding.searchButton.setOnClickListener((v) ->
+        organizationViewModel.findOpportunity(binding.searchBar.getText().toString().trim()));
     return binding.getRoot();
   }
 

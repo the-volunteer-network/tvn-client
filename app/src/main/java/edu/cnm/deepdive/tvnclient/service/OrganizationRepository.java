@@ -49,6 +49,10 @@ public class OrganizationRepository {
     return refreshToken()
         .flatMap((token) -> serviceProxy.findOrganizations(keyword, token));
   }
+  public Single<List<Opportunity>> searchOpportunities(String keyword){
+    return refreshToken()
+        .flatMap((token) -> serviceProxy.findOpportunities(keyword, token));
+  }
 
   // TODO Decide if we want the result, or just the fact that it was completed.
   //  public Single<Organization> modifyOrganization(UUID organizationId, Organization organization) {
