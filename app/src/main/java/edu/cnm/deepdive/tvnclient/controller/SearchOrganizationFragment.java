@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
-import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter.OrgClickListener;
+import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter.OnDetailsClickListener;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
@@ -33,7 +33,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private SearchOrganizationAdapter adapter;
   private GoogleMap googleMap;
   private List<Organization> organizations;
-  private OrgClickListener listener;
+  private OnDetailsClickListener listener;
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,8 +47,8 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     mapFragment.getMapAsync(this);
     binding.organizations.setOnClickListener((v) -> {
       Navigation
-          .findNavController(binding.getRoot())
-          .navigate(SearchOrganizationFragmentDirections.showOrganization());
+          .findNavController(binding.getRoot());
+       //   .navigate(SearchOrganizationFragmentDirections.showOrganization());
     });
     return binding.getRoot();
   }
@@ -61,11 +61,12 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
-          adapter = new SearchOrganizationAdapter(getContext(), orgs,listener );
+       /*   adapter = new SearchOrganizationAdapter(getContext(), orgs, (position, org) -> {},
+         //     favoriteClickListener, volunteerClickListener, mapClickListener);
           // TODO create an instance of recyclerview adapter, pass orgs to it,
           // TODO Attach adapter to recyclerView.
           binding.organizations.setAdapter(adapter);
-          showOrganizations();
+          showOrganizations();*/
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
     getLifecycle().addObserver(locationViewModel);
