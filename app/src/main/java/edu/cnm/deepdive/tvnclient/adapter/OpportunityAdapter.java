@@ -31,12 +31,13 @@ public class OpportunityAdapter extends RecyclerView.Adapter<Holder> {
 
   @Override
   public void onBindViewHolder(@NonNull Holder holder, int position) {
+     holder.bind(position);
 
   }
 
   @Override
   public int getItemCount() {
-    return 0;
+    return opportunities.size();
   }
 
   class Holder extends RecyclerView.ViewHolder {
