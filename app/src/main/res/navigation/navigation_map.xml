@@ -35,6 +35,9 @@
     android:name="edu.cnm.deepdive.tvnclient.controller.SearchOrganizationFragment"
     tools:layout="@layout/fragment_search_organization"
     android:label="Search"/>
+  <action
+    android:id="@+id/show_organization"
+    app:destination="@id/navigation_organization"/>
 
   <fragment
     android:id="@+id/navigation_opportunity"
@@ -42,6 +45,9 @@
     tools:layout="@layout/fragment_opportunity"
     android:label="My opportunities"/>
 
+  <action
+    android:id="@+id/show_opportunity"
+    app:destination="@id/navigation_organization"/>
   <dialog
     android:id="@+id/navigation_permissions_explanation"
     android:name="edu.cnm.deepdive.tvnclient.controller.PermissionsExplanationFragment">

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
+import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter.OrgClickListener;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
@@ -31,7 +33,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private SearchOrganizationAdapter adapter;
   private GoogleMap googleMap;
   private List<Organization> organizations;
-
+  private OrgClickListener listener;
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -43,6 +45,11 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(
         R.id.map);
     mapFragment.getMapAsync(this);
+    binding.organizations.setOnClickListener((v) -> {
+      Navigation
+          .findNavController(binding.getRoot())
+          .navigate(SearchOrganizationFragmentDirections.showOrganization());
+    });
     return binding.getRoot();
   }
 
@@ -54,7 +61,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
-          adapter = new SearchOrganizationAdapter(getContext(), orgs);
+          adapter = new SearchOrganizationAdapter(getContext(), orgs,listener );
           // TODO create an instance of recyclerview adapter, pass orgs to it,
           // TODO Attach adapter to recyclerView.
           binding.organizations.setAdapter(adapter);

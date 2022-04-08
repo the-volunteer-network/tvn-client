@@ -2,7 +2,6 @@ package edu.cnm.deepdive.tvnclient.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +14,16 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
 
   private final List<Organization> organizations;
   private final LayoutInflater layoutInflater;
+  private final OrgClickListener listener;
 
 
-  public SearchOrganizationAdapter(Context context, List<Organization> organizations) {
+  public SearchOrganizationAdapter(Context context, List<Organization> organizations,
+      OrgClickListener listener) {
     this.organizations = organizations;
 
     layoutInflater = LayoutInflater.from(context);
+    this.listener = listener;
+
   }
 
 
@@ -41,7 +44,7 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
     return organizations.size();
   }
 
-  class Holder extends RecyclerView.ViewHolder {
+  class Holder extends RecyclerView.ViewHolder implements OrgClickListener {
 
     private final ItemSearchBinding binding;
 
@@ -54,8 +57,29 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
     public void bind(int position) {
       Organization organization = organizations.get(position);
       binding.organizationName.setText(organization.getName());
+      binding.getRoot().setOnClickListener((v) -> listener.onClick(position));
+
 //      binding.description.setText(organization.getAbout());
 
     }
+
+    @Override
+    public void onClick(int position) {
+
+    }
+  }
+  @FunctionalInterface
+  public interface OrgClickListener {
+
+    void onClick(int position);
+
+
   }
 }
+
+
+
+
+
+
+
