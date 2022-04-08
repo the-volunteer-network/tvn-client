@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.tvnclient.model.dto;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import java.util.Date;
@@ -135,5 +136,11 @@ public class Organization {
     }
 
     return result;
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    return name;
   }
 }
