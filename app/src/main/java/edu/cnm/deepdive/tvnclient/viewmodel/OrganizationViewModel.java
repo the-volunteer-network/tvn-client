@@ -71,6 +71,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
     pending.add(disposable);
   }
+  public void findOpportunity(String keyword) {
+    throwable.setValue(null);
+    Disposable disposable = organizationRepository
+        .searchOpportunities(keyword)
+        .subscribe(
+            (opp) ->  {
+              opportunities.postValue(opp);},
+                  (throwable) -> postThrowable(throwable),
+            pending
+
+  );
+
+  }
 
   public LiveData<Organization> getOrganization() {
     return organization;
