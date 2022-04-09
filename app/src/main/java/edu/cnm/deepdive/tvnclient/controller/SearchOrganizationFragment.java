@@ -34,6 +34,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private GoogleMap googleMap;
   private List<Organization> organizations;
   private OnDetailsClickListener listener;
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -46,9 +47,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         R.id.map);
     mapFragment.getMapAsync(this);
     binding.organizations.setOnClickListener((v) -> {
-      Navigation
-          .findNavController(binding.getRoot());
-       //   .navigate(SearchOrganizationFragmentDirections.showOrganization());
+
     });
     return binding.getRoot();
   }
@@ -61,12 +60,24 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
-       /*   adapter = new SearchOrganizationAdapter(getContext(), orgs, (position, org) -> {},
-         //     favoriteClickListener, volunteerClickListener, mapClickListener);
+          adapter = new SearchOrganizationAdapter(getContext(), orgs, (position, org) -> {
+
+          },
+              ((position, organization, favorite) -> {
+
+              }),
+              ((position, organization, volunteer) -> {
+              }),
+              ((position, organization) -> {
+                Navigation
+                    .findNavController(binding.getRoot())
+                    .navigate(SearchOrganizationFragmentDirections.editOrganization());
+              }));
+
           // TODO create an instance of recyclerview adapter, pass orgs to it,
           // TODO Attach adapter to recyclerView.
           binding.organizations.setAdapter(adapter);
-          showOrganizations();*/
+          showOrganizations();
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
     getLifecycle().addObserver(locationViewModel);

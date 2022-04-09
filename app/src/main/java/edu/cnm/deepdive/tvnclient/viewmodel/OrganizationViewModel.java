@@ -84,6 +84,15 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   );
 
   }
+ /* public void setFavorite(UUID Id, boolean favorite){
+    throwable.setValue(null);
+
+   organizationRepository
+       .setFavorite(Id, favorite)
+       .subscribe((organization) -> {
+
+       });
+  }*/
 
   public LiveData<Organization> getOrganization() {
     return organization;
@@ -244,6 +253,8 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             pending
         );
   }
+
+
 
   public LiveData<Throwable> getThrowable() {
     return throwable;

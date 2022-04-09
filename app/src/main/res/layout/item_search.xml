@@ -25,6 +25,7 @@
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_static_spacing"
       tools:text="Doctors without Borders"
+
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>
@@ -45,7 +46,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/half_dynamic_spacing"
-      android:src="@drawable/ic_baseline_handshake_24"
+      android:src="@drawable/ic_baseline_favorite_24"
       android:background="?android:selectableItemBackgroundBorderless"
       app:layout_constraintTop_toTopOf="@id/organization_name"
       app:layout_constraintBottom_toBottomOf="@id/organization_name"

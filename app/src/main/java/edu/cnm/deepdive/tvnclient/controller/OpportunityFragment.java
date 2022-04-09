@@ -34,11 +34,11 @@ public class OpportunityFragment extends Fragment {
     binding = FragmentOpportunityBinding.inflate(inflater,container, false);
     binding.searchButton.setOnClickListener((v) ->
         organizationViewModel.findOpportunity(binding.searchBar.getText().toString().trim()));
-    binding.opportunities.setOnClickListener((v) -> {
+   /* binding.opportunities.setOnClickListener((v) -> {
       Navigation
-          .findNavController(binding.getRoot())
-          .navigate(SearchOrganizationFragmentDirections.showOrganization());
-    });
+          .findNavController(binding.getRoot());
+
+    });*/
     return binding.getRoot();
   }
 
