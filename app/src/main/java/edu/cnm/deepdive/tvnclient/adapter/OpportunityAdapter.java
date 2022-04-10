@@ -11,11 +11,19 @@ import edu.cnm.deepdive.tvnclient.databinding.ItemOpportunityBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import java.util.List;
 
+/**
+ * Provides access to a recycler view for the {@link Opportunity} fragment and creates a view for each item in the data set.
+ */
 public class OpportunityAdapter extends RecyclerView.Adapter<Holder> {
 
   private final List<Opportunity> opportunities;
   private final LayoutInflater inflater;
 
+  /**
+   *Initialize this instance of {@link OpportunityAdapter} with the injected below parameters.
+   * @param context
+   * @param opportunities
+   */
   public OpportunityAdapter( Context context,
       List<Opportunity> opportunities) {
     this.opportunities = opportunities;
@@ -40,13 +48,25 @@ public class OpportunityAdapter extends RecyclerView.Adapter<Holder> {
     return opportunities.size();
   }
 
+  /**
+   * Provides access to a recycler view and creates a view for each item in the data set.
+   */
   class Holder extends RecyclerView.ViewHolder {
     private ItemOpportunityBinding binding;
 
+    /**
+     * Wraps around the View that contains the {@code fragment_advice.xml} layout
+     * @param binding Attaches to the root of the layout,
+     */
     public Holder(@NonNull ItemOpportunityBinding binding) {
       super(binding.getRoot());
       this.binding = binding;
     }
+
+    /**
+     * Binds the item according to its position
+     * @param position
+     */
     public void bind (int position) {
       Opportunity opportunity = opportunities.get(position);
     }

@@ -24,13 +24,13 @@
     tools:layout="@layout/fragment_profile"
     android:label="Profile"/>
 
-<!--
+
   <fragment
     android:id="@+id/navigation_organization"
     android:name="edu.cnm.deepdive.tvnclient.controller.OrganizationFragment"
     tools:layout="@layout/fragment_organization"
     android:label="My organizations"/>
--->
+
 
   <fragment
     android:id="@+id/navigation_search_organization"

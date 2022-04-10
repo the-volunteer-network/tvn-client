@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import edu.cnm.deepdive.tvnclient.adapter.OpportunityAdapter;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentOpportunityBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
@@ -33,6 +34,11 @@ public class OpportunityFragment extends Fragment {
     binding = FragmentOpportunityBinding.inflate(inflater,container, false);
     binding.searchButton.setOnClickListener((v) ->
         organizationViewModel.findOpportunity(binding.searchBar.getText().toString().trim()));
+   /* binding.opportunities.setOnClickListener((v) -> {
+      Navigation
+          .findNavController(binding.getRoot());
+
+    });*/
     return binding.getRoot();
   }
 

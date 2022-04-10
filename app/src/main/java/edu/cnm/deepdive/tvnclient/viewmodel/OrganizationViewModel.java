@@ -26,6 +26,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   private final MutableLiveData<Opportunity> opportunity;
   private final MutableLiveData<UUID> opportunityId;
   private final MutableLiveData<List<Opportunity>> opportunities;
+  private final MutableLiveData<Boolean>  favorites;
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
@@ -40,6 +41,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     opportunity = new MutableLiveData<>();
     opportunityId = new MutableLiveData<>();
     opportunities = new MutableLiveData<>();
+    favorites = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
     fetchAllOrganizations();
@@ -84,6 +86,46 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   );
 
   }
+  public void setFavorite(UUID id, Organization organization, boolean favorite){
+    throwable.setValue(null);
+
+    organizationRepository
+        .setFavorite(id, favorite)
+        .subscribe(
+            (fav) ->{
+              organization.setFavorite(fav);
+              this.organization.postValue(organization);
+              organizations.postValue(organizations.getValue());
+            } ,
+            (throwable)-> postThrowable(throwable),
+            pending
+        );
+
+
+
+
+  }
+
+  public void setVolunteer(UUID id, Organization organization, boolean volunteer){
+    throwable.setValue(null);
+
+    organizationRepository
+        .setVolunteer(id, volunteer)
+        .subscribe(
+            (vol) ->{
+              organization.setVolunteer(vol);
+              this.organization.postValue(organization);
+              organizations.postValue(organizations.getValue());
+            } ,
+            (throwable)-> postThrowable(throwable),
+            pending
+        );
+
+
+
+
+  }
+
 
   public LiveData<Organization> getOrganization() {
     return organization;
@@ -244,6 +286,8 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             pending
         );
   }
+
+
 
   public LiveData<Throwable> getThrowable() {
     return throwable;

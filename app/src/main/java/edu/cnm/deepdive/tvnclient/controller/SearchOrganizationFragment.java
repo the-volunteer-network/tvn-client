@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
+import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter.OnDetailsClickListener;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
@@ -31,6 +33,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private SearchOrganizationAdapter adapter;
   private GoogleMap googleMap;
   private List<Organization> organizations;
+  private OnDetailsClickListener listener;
 
   @Nullable
   @Override
@@ -43,6 +46,9 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(
         R.id.map);
     mapFragment.getMapAsync(this);
+    binding.organizations.setOnClickListener((v) -> {
+
+    });
     return binding.getRoot();
   }
 
@@ -54,11 +60,25 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
-          adapter = new SearchOrganizationAdapter(getContext(), orgs);
-          // TODO create an instance of recyclerview adapter, pass orgs to it,
-          // TODO Attach adapter to recyclerView.
+          adapter = new SearchOrganizationAdapter(getContext(), orgs,
+              (position, org) -> {
+                //Todo display details of org
+                Navigation
+                    .findNavController(binding.getRoot())
+                    .navigate(SearchOrganizationFragmentDirections.editOrganization());
+              },
+              ((position, organization, favorite) -> {
+                organizationViewModel.setFavorite(organization.getId(), organization, favorite);
+              }),
+              ((position, organization, volunteer) -> {
+               organizationViewModel.setVolunteer(organization.getId(), organization, volunteer);
+              }),
+              ((position, organization) -> {
+               showOrganization(organization);
+              }));
+
           binding.organizations.setAdapter(adapter);
-          showOrganizations();
+  //        showOrganizations();
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
     getLifecycle().addObserver(locationViewModel);
@@ -83,6 +103,17 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
       }
     }
   }
+  private void showOrganization(Organization org) {
+      googleMap.clear();
+        LatLng location = new LatLng(org.getLatitude(), org.getLongitude());
+        googleMap.addMarker(new MarkerOptions()
+            .title(org.getName())
+            .position(location)
+        );
+      }
+
+
+
 
   @Override
   public void onDestroyView() {
@@ -95,7 +126,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     this.googleMap = googleMap;
     LatLng start = new LatLng(35.691544, -105.944183);
     googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-    CameraUpdate initialSetting = CameraUpdateFactory.newLatLngZoom(start, 6);
+    CameraUpdate initialSetting = CameraUpdateFactory.newLatLngZoom(start, 8);
     googleMap.moveCamera(initialSetting);
 //    googleMap.getUiSettings().isMyLocationButtonEnabled();
     googleMap.getUiSettings().setZoomControlsEnabled(true);
