@@ -60,24 +60,25 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
-          adapter = new SearchOrganizationAdapter(getContext(), orgs, (position, org) -> {
-
-          },
-              ((position, organization, favorite) -> {
-
-              }),
-              ((position, organization, volunteer) -> {
-              }),
-              ((position, organization) -> {
+          adapter = new SearchOrganizationAdapter(getContext(), orgs,
+              (position, org) -> {
+                //Todo display details of org
                 Navigation
                     .findNavController(binding.getRoot())
                     .navigate(SearchOrganizationFragmentDirections.editOrganization());
+              },
+              ((position, organization, favorite) -> {
+                organizationViewModel.setFavorite(organization.getId(), organization, favorite);
+              }),
+              ((position, organization, volunteer) -> {
+               organizationViewModel.setVolunteer(organization.getId(), organization, volunteer);
+              }),
+              ((position, organization) -> {
+               showOrganization(organization);
               }));
 
-          // TODO create an instance of recyclerview adapter, pass orgs to it,
-          // TODO Attach adapter to recyclerView.
           binding.organizations.setAdapter(adapter);
-          showOrganizations();
+  //        showOrganizations();
         });
     locationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
     getLifecycle().addObserver(locationViewModel);
@@ -102,6 +103,17 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
       }
     }
   }
+  private void showOrganization(Organization org) {
+      googleMap.clear();
+        LatLng location = new LatLng(org.getLatitude(), org.getLongitude());
+        googleMap.addMarker(new MarkerOptions()
+            .title(org.getName())
+            .position(location)
+        );
+      }
+
+
+
 
   @Override
   public void onDestroyView() {
@@ -114,7 +126,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
     this.googleMap = googleMap;
     LatLng start = new LatLng(35.691544, -105.944183);
     googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-    CameraUpdate initialSetting = CameraUpdateFactory.newLatLngZoom(start, 6);
+    CameraUpdate initialSetting = CameraUpdateFactory.newLatLngZoom(start, 8);
     googleMap.moveCamera(initialSetting);
 //    googleMap.getUiSettings().isMyLocationButtonEnabled();
     googleMap.getUiSettings().setZoomControlsEnabled(true);

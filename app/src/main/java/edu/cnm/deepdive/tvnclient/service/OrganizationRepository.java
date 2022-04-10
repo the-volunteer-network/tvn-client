@@ -39,6 +39,11 @@ public class OrganizationRepository {
     return refreshToken()
         .flatMap((token) -> serviceProxy.setFavorite(organizationId, favorite, token));
   }
+  public Single<Boolean> setVolunteer(UUID organizationId, boolean volunteer) {
+    return refreshToken()
+        .flatMap((token) -> serviceProxy.setVolunteer(organizationId, volunteer, token));
+  }
+
 
   public Single<Organization> addOrganization(Organization organization) {
     return refreshToken()
