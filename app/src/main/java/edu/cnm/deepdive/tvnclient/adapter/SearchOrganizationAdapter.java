@@ -3,6 +3,7 @@ package edu.cnm.deepdive.tvnclient.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -95,12 +96,36 @@ public class SearchOrganizationAdapter extends RecyclerView.Adapter<Holder> {
     public void bind(int position) {
       Organization organization = organizations.get(position);
       binding.organizationName.setText(organization.getName());
-      binding.favorite.setColorFilter(organization.isFavorite()? favoriteColor : unselectedColor );
-      binding.volunteer.setColorFilter(organization.isVolunteer() ? volunteerColor : unselectedColor);
-      binding.info.setOnClickListener((v) -> detailsClickListener.onClick(position, organization));
-      binding.favorite.setOnClickListener((v) -> favoriteClickListener.onClick(position, organization, !organization.isFavorite()));
-      binding.volunteer.setOnClickListener((v) -> volunteerClickListener.onClick(position, organization, !organization.isVolunteer()));
-      binding.map.setOnClickListener((v) -> mapClickListener.onClick(position, organization));
+      if (favoriteClickListener != null ) {
+        binding.favorite.setColorFilter(
+            organization.isFavorite() ? favoriteColor : unselectedColor);
+        binding.favorite.setOnClickListener((v) -> favoriteClickListener.onClick(position, organization, !organization.isFavorite()));
+        binding.favorite.setVisibility(View.VISIBLE);
+      }else{
+        binding.favorite.setVisibility(View.GONE);
+      }
+      if (volunteerClickListener != null) {
+        binding.volunteer.setColorFilter(
+            organization.isVolunteer() ? volunteerColor : unselectedColor);
+        binding.volunteer.setOnClickListener((v) -> volunteerClickListener.onClick(position, organization, !organization.isVolunteer()));
+        binding.volunteer.setVisibility(View.VISIBLE);
+      }else {
+        binding.volunteer.setVisibility(View.GONE);
+      }
+      if (detailsClickListener!= null ) {
+        binding.info.setOnClickListener(
+            (v) -> detailsClickListener.onClick(position, organization));
+        binding.info.setVisibility(View.VISIBLE);
+      } else {
+        binding.info.setVisibility(View.GONE);
+      }
+      if (mapClickListener != null) {
+        binding.map.setOnClickListener((v) -> mapClickListener.onClick(position, organization));
+        binding.map.setVisibility(View.VISIBLE);
+      } else {
+        binding.map.setVisibility(View.GONE);
+      }
+
 
 //      binding.description.setText(organization.getAbout());
 
