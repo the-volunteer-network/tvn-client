@@ -24,19 +24,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="@id/search_bar"/>
 
-<!--  <com.google.android.gms.maps.MapView-->
-<!--    android:id="@+id/map"-->
-<!--    android:layout_height="0dp"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:clickable="true"-->
-<!--    android:contextClickable="true"-->
-<!--    android:padding="@dimen/half_dynamic_spacing"-->
-<!--    android:layout_margin="@dimen/half_dynamic_spacing"-->
-<!--    tools:context=".controller.SearchOrganizationFragment"-->
-
-<!--  app:layout_constraintStart_toStartOf="parent"-->
-<!--    app:layout_constraintBottom_toTopOf="@id/organizations"-->
-<!--    app:layout_constraintTop_toBottomOf="@id/search_bar"/>-->
 
   <fragment
     android:id="@+id/map"
@@ -56,6 +43,7 @@
     android:id="@+id/organizations"
     android:layout_width="0dp"
     android:layout_height="0dp"
+    android:clickable="true"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_constraintTop_toBottomOf="@id/map"

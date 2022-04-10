@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="@dimen/half_dynamic_spacing"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  tools:context=".controller.ProfileFragment">
+  tools:context=".controller.OrganizationFragment">
 
 
   <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/organization_name"
+    android:id="@+id/name_layout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/half_dynamic_spacing"
@@ -19,7 +18,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent">
     <com.google.android.material.textfield.TextInputEditText
-      android:id="@+id/display_name"
+      android:id="@+id/name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_dynamic_spacing"
@@ -34,7 +33,7 @@
     android:layout_margin="@dimen/half_dynamic_spacing"
     app:hintAnimationEnabled="true"
     app:hintEnabled="true"
-    app:layout_constraintTop_toBottomOf="@id/organization_name"
+    app:layout_constraintTop_toBottomOf="@id/name_layout"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent">
     <com.google.android.material.textfield.TextInputEditText
@@ -61,7 +60,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_dynamic_spacing"
-      android:inputType="text"
+      android:inputType="textMultiLine"
+      android:maxLines="3"
+      android:minLines="3"
       android:hint="@string/mission_label"/>
   </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,22 +70,12 @@
     android:id="@+id/opportunities"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    android:layout_margin="@dimen/half_dynamic_spacing"
+    android:layout_marginTop="@dimen/half_dynamic_spacing"
     app:layout_constraintTop_toBottomOf="@id/mission_layout"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/update"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_baseline_save_24"
-    android:enabled="false"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:useCompatPadding="true"
-    tools:ignore="ContentDescription"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

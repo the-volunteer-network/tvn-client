@@ -34,7 +34,6 @@ public interface TVNServiceProxy {
 
   @GET("organizations")
   Single<List<Organization>> findOrganizations(@Query("q") String fragment, @Header("Authorization") String bearerToken);
-
   @POST("organizations")
   Single<Organization> addOrganization(@Body Organization organization, @Header("Authorization") String bearerToken);
 
@@ -53,6 +52,9 @@ public interface TVNServiceProxy {
 
   @PUT("organizations/{organizationId}/name")
   Single<String> setOrganizationName(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
+
+  @GET("organizations/opportunities")
+  Single<List<Opportunity>> findOpportunities(@Query("q") String fragment, @Header("Authorization") String bearerToken);
 
   @GET("organizations/{organizationId}/opportunities")
   Single<List<Opportunity>> getAllOpportunities(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
@@ -87,10 +89,10 @@ public interface TVNServiceProxy {
   @GET("users/me/volunteers")
   Single<List<Organization>> getVolunteers(@Header("Authorization") String bearerToken);
 
-  @GET("users/volunteers/{organizationId}")
+  @GET("users/me/volunteers/{organizationId}")
   Single<Boolean> isVolunteer(@Path("organizationId") UUID organizationId, @Header("Authorization") String bearerToken);
 
-  @PUT("users/volunteers/{organizationId}")
+  @PUT("users/me/volunteers/{organizationId}")
   Single<Boolean> setVolunteer(@Path("organizationId") UUID organizationId, @Body boolean volunteer, @Header("Authorization") String bearerToken);
 
 
