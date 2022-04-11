@@ -1,57 +1,159 @@
 package edu.cnm.deepdive.tvnclient.controller;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import java.util.UUID;
 
-public class OrganizationFragment extends DialogFragment {
+public class OrganizationFragment extends DialogFragment implements OnShowListener, TextWatcher {
 
   private OrganizationViewModel organizationViewModel;
   private FragmentOrganizationBinding binding;
   private UUID organizationId;
+  private UUID userId;
   private Organization organization;
+  private AlertDialog dialog;
+  private boolean displayed;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    organizationId = OrganizationFragmentArgs.fromBundle(getArguments()).getOrganizationId();
+    OrganizationFragmentArgs organizationFragmentArgs =
+        OrganizationFragmentArgs.fromBundle(getArguments());
+    organizationId = organizationFragmentArgs.getOrganizationId();
   }
 
   @NonNull
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-    // TODO Use alert dialog builder to create the dialog to be returned
-    return super.onCreateDialog(savedInstanceState);
+    LayoutInflater inflater = LayoutInflater.from(getContext());
+    binding = FragmentOrganizationBinding.inflate(inflater, null, false);
+    binding.name.addTextChangedListener(this);
+    binding.about.addTextChangedListener(this);
+    binding.mission.addTextChangedListener(this);
+    dialog = new AlertDialog.Builder(getContext())
+        .setIcon(R.drawable.ic_baseline_info_24)
+        .setTitle(R.string.organization_details_title)
+        .setView(binding.getRoot())
+        .setNeutralButton(android.R.string.ok, (d, w) -> {
+        })
+        .setNegativeButton(android.R.string.cancel, (d, w) -> {
+        })
+        .setPositiveButton(android.R.string.ok, (d, w) -> {
+            // TODO Set the properties of organization based on contents of binding (what the user has typed in)
+          if (organizationId == null) {
+            organizationViewModel.addOrganization(organization);
+          } else {
+            organizationViewModel.modifyOrganization(organizationId, organization);
+          }
+        })
+        .create();
+    dialog.setOnShowListener(this);
+    return dialog;
   }
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-// TODO Return view already inflated in onCreateDialog
-    return super.onCreateView(inflater, container, savedInstanceState);
+    return binding.getRoot();
   }
 
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    // TODO Connect to organization view model and user view model (we need to know who the current user is) and retrieve organization with specified ID
-    super.onViewCreated(view, savedInstanceState);
+    organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
+    getLifecycle().addObserver(organizationViewModel);
+    organizationViewModel
+        .getOrganization()
+        .observe(getViewLifecycleOwner(), (org) -> {
+          organization = org;
+          binding.name.setText(org.getName());
+          binding.about.setText(org.getAbout());
+          binding.mission.setText(org.getMission());
+          showButtons();
+        });
+    if (organizationId != null) {
+      organizationViewModel.fetchOrganization(organizationId);
+    } else {
+      organization = new Organization();
+      binding.name.setText("");
+      binding.about.setText("");
+      binding.mission.setText("");
+      showButtons();
+    }
   }
 
   @Override
   public void onDestroyView() {
     binding = null;
     super.onDestroyView();
+  }
+
+  @Override
+  public void onShow(DialogInterface dialog) {
+    displayed = true;
+    showButtons();
+  }
+
+  private void showButtons() {
+    if (displayed && organization != null) {
+      if (organizationId == null || organization.isOwned()) {
+        this.dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.GONE);
+        this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+        this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+        binding.name.setEnabled(true);
+        binding.about.setEnabled(true);
+        binding.mission.setEnabled(true);
+        checkSubmitConditions();
+      } else {
+        this.dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+        this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
+        this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+        binding.name.setEnabled(false);
+        binding.about.setEnabled(false);
+        binding.mission.setEnabled(false);
+      }
+    }
+  }
+
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    // No action necessary.
+  }
+
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {
+    // No action necessary.
+  }
+
+  @Override
+  public void afterTextChanged(Editable s) {
+    checkSubmitConditions();
+  }
+
+  private void checkSubmitConditions() {
+    dialog
+        .getButton(AlertDialog.BUTTON_POSITIVE)
+        .setEnabled(
+            !binding.name.getText().toString().trim().isEmpty()
+                && !binding.about.getText().toString().trim().isEmpty()
+                && !binding.mission.getText().toString().trim().isEmpty()
+        );
   }
 }

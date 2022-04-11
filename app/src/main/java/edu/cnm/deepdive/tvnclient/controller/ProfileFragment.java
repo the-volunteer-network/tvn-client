@@ -3,7 +3,6 @@ package edu.cnm.deepdive.tvnclient.controller;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,11 +61,14 @@ public class ProfileFragment extends Fragment implements TextWatcher {
         .getOrganizations()
         .observe(getViewLifecycleOwner(), (orgs) -> {
           SearchOrganizationAdapter adapter = new SearchOrganizationAdapter(
-            getContext(),
-            orgs,
+              getContext(),
+              orgs,
               (pos, org) -> Navigation
                   .findNavController(binding.getRoot())
-                  .navigate(ProfileFragmentDirections.editOrganization().setOrganizationId(org.getId())),
+                  .navigate(
+                      ProfileFragmentDirections.editOrganization()
+                          .setOrganizationId(org.getId())
+                  ),
               (pos, org, fav) -> organizationViewModel.setFavorite(org.getId(), org, fav),
               (pos, org, vol) -> organizationViewModel.setVolunteer(org.getId(), org, vol),
               null
@@ -81,8 +83,8 @@ public class ProfileFragment extends Fragment implements TextWatcher {
   public void checkSubmissionConditions() {
     binding.update.setEnabled(
         user != null
-        && !binding.displayName.getText().toString().trim().isEmpty()
-        && !binding.displayName.getText().toString().trim().equals(user.getDisplayName())
+            && !binding.displayName.getText().toString().trim().isEmpty()
+            && !binding.displayName.getText().toString().trim().equals(user.getDisplayName())
         // TODO Check that other required fields are not blank, and that at least 1 field has been modified, otherwise, do not send to server.
     );
   }
@@ -100,6 +102,6 @@ public class ProfileFragment extends Fragment implements TextWatcher {
 
   @Override
   public void afterTextChanged(Editable s) {
-   checkSubmissionConditions();
+    checkSubmissionConditions();
   }
 }
