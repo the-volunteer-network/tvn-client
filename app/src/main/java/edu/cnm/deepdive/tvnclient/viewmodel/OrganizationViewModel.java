@@ -15,7 +15,14 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.util.List;
 import java.util.UUID;
+import edu.cnm.deepdive.tvnclient.controller.SearchOrganizationFragment;
+import  edu.cnm.deepdive.tvnclient.model.dto.User;
 
+
+/**
+ *  Prepares and manages the data for the {@link Organization },  {@link SearchOrganizationFragment} and {@link Opportunity} fragment .
+ *  Handles the communication of the {@link Organization },  {@link SearchOrganizationFragment} and {@link Opportunity}with the rest of the application.
+ */
 @SuppressWarnings("Convert2MethodRef")
 public class OrganizationViewModel extends AndroidViewModel implements DefaultLifecycleObserver {
 
@@ -30,7 +37,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   private final MutableLiveData<Throwable> throwable;
   private final CompositeDisposable pending;
 
-
+  /**
+   *Initialize this instance of {@link OrganizationViewModel} with the injected parameters.
+   * @param application
+   */
   public OrganizationViewModel(
       @NonNull Application application) {
     super(application);
@@ -47,6 +57,9 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
 //    fetchAllOrganizations(); // TODO Decide whether search fragment should start with ALL orgs or no orgs.
   }
 
+  /**
+   * Retrieves all the {@link Organization} from the database.
+   */
   public void fetchAllOrganizations() {
     throwable.postValue(null);
     organizationRepository
@@ -58,6 +71,9 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Retrieves all of the  {@link Organization} from the database specific to {@link User }
+   */
   public void fetchMyOrganizations() {
     throwable.postValue(null);
     organizationRepository
@@ -69,11 +85,18 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Retrieves a List of all {@link Organization}
+   * @return
+   */
   public LiveData<List<Organization>> getOrganizations() {
     return organizations;
   }
 
-
+  /**
+   * Searches and retrieves the specific {@link Organization} specific to {@code keyword}
+   * @param keyword
+   */
   public void findOrganizations(String keyword) {
     throwable.setValue(null);
     Disposable disposable = organizationRepository
@@ -84,6 +107,11 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
     pending.add(disposable);
   }
+
+  /**
+   * Searches and retrieves the specific {@link Opportunity} specific to {@code keyword}
+   * @param keyword
+   */
   public void findOpportunity(String keyword) {
     throwable.setValue(null);
     Disposable disposable = organizationRepository
@@ -95,8 +123,14 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             pending
 
   );
-
   }
+
+  /**
+   * Sets the current instance of {@link Organization} as {@code favorite}
+   * @param id      id passed to set this instance
+   * @param organization passed to set this instance
+   * @param favorite
+   */
   public void setFavorite(UUID id, Organization organization, boolean favorite){
     throwable.setValue(null);
 
@@ -113,6 +147,12 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Sets the current instance of {@link Organization} as {@code favorite}
+   * @param id      id passed to set this instance
+   * @param organization passed to set this instance
+   * @param volunteer
+   */
   public void setVolunteer(UUID id, Organization organization, boolean volunteer){
     throwable.setValue(null);
     organizationRepository
@@ -128,10 +168,18 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Retrieves the specific instance of {@link Organization}
+   * @return
+   */
   public LiveData<Organization> getOrganization() {
     return organization;
   }
 
+  /**
+   * Adds the specified instance of {@link Organization} to the database
+   * @param org
+   */
   public void addOrganization(Organization org) {
     throwable.setValue(null);
     organizationRepository
@@ -147,10 +195,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Returns a LiveData of the {@code id} of the specified {@link Organization}
+   * @param id
+   * @return
+   */
   public LiveData<UUID> getOrganizationId(UUID id) {
     return organizationId;
   }
 
+  /**
+   * Returns the specified {@link Organization}
+   * @param id
+   */
   public void fetchOrganization(UUID id) {
     throwable.setValue(null);
     organizationId.setValue(id);
@@ -163,6 +220,11 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Modifies the specified instance of {@link  Organization}
+   * @param id
+   * @param org
+   */
   public void modifyOrganization(UUID id, Organization org) {
     throwable.setValue(null);
     organizationId.setValue(id);
@@ -180,6 +242,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
 
   }
 
+  /**
+   * Deletes the specified {@link Organization}
+   * @param id
+   */
   public void deleteOrganization(UUID id) {
     throwable.setValue(null);
     organizationRepository
@@ -192,6 +258,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Returns the name of an {@link Organization} specific to its {@code id}.
+   * @param id
+   */
   // TODO Decide if you want to modify one prop at time? If not, remove the 2 below.
   public void getOrganizationName(UUID id) {
     throwable.setValue(null);
@@ -203,6 +273,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Sets the name of an {@link Organization} specific to its {@code id}.
+   * @param id
+   */
   public void setOrganizationName(UUID id) {
     throwable.setValue(null);
     organizationId.setValue(id);
@@ -214,7 +288,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
 
   }
 
-
+  /**
+   * Retrieves all of the {@link Opportunity} from the database
+   * @param organizationId
+   */
   public void fetchAllOpportunities(UUID organizationId) {
     throwable.postValue(null);
     Disposable disposable = organizationRepository
@@ -226,10 +303,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Retrieves a List of all {@link Opportunity}
+   * @return
+   */
   public LiveData<List<Opportunity>> getOpportunities() {
     return opportunities;
   }
 
+  /**
+   * Adds the specified instance of {@link Organization} to the database specific to its{@code orgId}
+   * @param orgId
+   * @param opp
+   */
   public void addOpportunity(UUID orgId, Opportunity opp) {
     throwable.setValue(null);
     organizationRepository
@@ -245,10 +331,19 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Retrieves the specific instance of {@link Opportunity}
+   * @return
+   */
   public LiveData<Opportunity> getOpportunity() {
     return opportunity;
   }
 
+  /**
+   * Returns the specified {@link Opportunity}
+   * @param oppId
+   * @param orgId
+   */
   public void fetchOpportunity(UUID oppId, UUID orgId) {
     throwable.setValue(null);
     opportunityId.setValue(oppId);
@@ -261,6 +356,12 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
         );
   }
 
+  /**
+   * Modifies the specified instance of {@link  Organization} specific to its organization id and opportunity id.
+   * @param orgId
+   * @param oppId
+   * @param opp
+   */
   public void modifyOpportunity(UUID orgId, UUID oppId, Opportunity opp) {
     throwable.setValue(null);
     opportunityId.setValue(oppId);
@@ -277,6 +378,11 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   }
 // TODO If we don't want to do anything upon a successful result (above), then change repository method to return completable
 
+  /**
+   * Deletes the specified {@link Opportunity}
+   * @param orgId
+   * @param oppId
+   */
   public void deleteOpportunity(UUID orgId, UUID oppId) {
     throwable.setValue(null);
     organizationRepository
@@ -289,7 +395,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
   }
 
 
-
+  /**
+   * Returns a LiveData of {@code Throwable}
+   * @return
+   */
   public LiveData<Throwable> getThrowable() {
     return throwable;
   }
