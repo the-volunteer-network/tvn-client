@@ -85,7 +85,7 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
-    getLifecycle().addObserver(organizationViewModel);
+ //   getLifecycle().addObserver(organizationViewModel);
     organizationViewModel
         .getOrganization()
         .observe(getViewLifecycleOwner(), (org) -> {
@@ -151,7 +151,9 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
 
   @Override
   public void afterTextChanged(Editable s) {
-    checkSubmitConditions();
+    if (displayed) {
+      checkSubmitConditions();
+    }
   }
 
   private void checkSubmitConditions() {
