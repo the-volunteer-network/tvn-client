@@ -44,27 +44,6 @@ public class UserRepository {
         .ignoreElement();
   }
 
-  public Single<List<Organization>> getMyOrganizations() {
-    return refreshToken()
-        .flatMap((token) ->
-            Single
-                .zip(
-                    serviceProxy.getFavorites(token),
-                    serviceProxy.getVolunteers(token),
-//                    serviceProxy.getOwnedOrganizations(token),
-                    (favorites, volunteers /* TODO add the list return for my OWNED organizations */) -> {
-                      return Stream
-                          .concat(
-                              favorites.stream(),
-                              volunteers.stream() // TODO add the list return for my OWNED organizations as argument
-                          )
-                          .distinct()
-                          .sorted((orgA, orgB) -> orgA.getName().compareToIgnoreCase(orgB.getName()))
-                          .collect(Collectors.toList());
-                    }
-                )
-            );
-  }
 
   private Single<String> refreshToken() {
     return signInService

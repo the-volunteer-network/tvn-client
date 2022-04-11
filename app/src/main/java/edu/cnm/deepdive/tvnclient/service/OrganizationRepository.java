@@ -8,6 +8,8 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OrganizationRepository {
 
@@ -33,6 +35,28 @@ public class OrganizationRepository {
   public Single<Boolean> getFavorite(UUID organizationId) {
     return refreshToken()
         .flatMap((token) -> serviceProxy.isFavorite(organizationId, token));
+  }
+
+  public Single<List<Organization>> getMyOrganizations() {
+    return refreshToken()
+        .flatMap((token) ->
+            Single
+                .zip(
+                    serviceProxy.getFavorites(token),
+                    serviceProxy.getVolunteers(token),
+                    serviceProxy.getOwnedOrganizations(token),
+                    (favorites, volunteers, owned) -> {
+                      return Stream
+                          .concat(
+                              favorites.stream(),
+                              Stream.concat(volunteers.stream(), owned.stream())
+                          )
+                          .distinct()
+                          .sorted((orgA, orgB) -> orgA.getName().compareToIgnoreCase(orgB.getName()))
+                          .collect(Collectors.toList());
+                    }
+                )
+        );
   }
 
   public Single<Boolean> setFavorite(UUID organizationId, boolean favorite) {
