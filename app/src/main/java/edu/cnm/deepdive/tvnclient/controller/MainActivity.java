@@ -26,7 +26,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Main activity Class for the TVN android project.
+ * Entry point of the EL8 application.
+ * Loads the {@link MainActivity} and then the rest of the application.
+ * Defines, manages and inflates the {@code activity_main.xml} layout.
+ * Handles the lifecycle and input events of the whole application through {@link MainActivity}.
  */
 public class MainActivity extends AppCompatActivity implements
     PermissionsExplanationFragment.OnAcknowledgeListener {

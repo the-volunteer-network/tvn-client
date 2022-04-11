@@ -20,6 +20,10 @@ import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import java.util.UUID;
 
+/**
+ * Defines, manages and inflates the {@code fragment_organization.xml} layout.
+ * Handles its layout lifecycle and input events.
+ */
 public class OrganizationFragment extends DialogFragment implements OnShowListener, TextWatcher {
 
   private OrganizationViewModel organizationViewModel;
@@ -81,7 +85,7 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
-    getLifecycle().addObserver(organizationViewModel);
+ //   getLifecycle().addObserver(organizationViewModel);
     organizationViewModel
         .getOrganization()
         .observe(getViewLifecycleOwner(), (org) -> {
@@ -147,7 +151,9 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
 
   @Override
   public void afterTextChanged(Editable s) {
-    checkSubmitConditions();
+    if (displayed) {
+      checkSubmitConditions();
+    }
   }
 
   private void checkSubmitConditions() {

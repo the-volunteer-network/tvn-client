@@ -17,6 +17,11 @@ import edu.cnm.deepdive.tvnclient.model.dto.User;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
+
+/**
+ * Defines, manages and inflates the {@code fragment_profile.xml} layout.
+ * Handles its layout lifecycle and input events.
+ */
 public class ProfileFragment extends Fragment implements TextWatcher {
 
   private UserViewModel userViewModel;
@@ -80,6 +85,9 @@ public class ProfileFragment extends Fragment implements TextWatcher {
 
   // TODO Add methods that allows user to modify the aspects of their profile in one action
 
+  /**
+   * Verifies if the input entered by the user is within the specified conditions.
+   */
   public void checkSubmissionConditions() {
     binding.update.setEnabled(
         user != null
