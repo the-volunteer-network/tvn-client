@@ -78,9 +78,14 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
           .apply();
       organizationViewModel.findOrganizations(fragment);
     });
+    binding.addOrganization.setOnClickListener((v) -> Navigation
+        .findNavController(binding.getRoot())
+        .navigate(SearchOrganizationFragmentDirections.editOrganization())
+    );
     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(
         R.id.map);
     mapFragment.getMapAsync(this);
+
     return binding.getRoot();
   }
 
