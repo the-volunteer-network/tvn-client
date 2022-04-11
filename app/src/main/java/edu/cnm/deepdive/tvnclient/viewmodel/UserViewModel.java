@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Provide data to the view so the ew view can display those data on screen, Allows the user to
+ * Provides data to the view so the view can display those data on screen, Allows the user to
  * interact with data and change the data.
  */
 public class UserViewModel extends AndroidViewModel implements DefaultLifecycleObserver {
@@ -67,6 +67,9 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
     return currentUser;
   }
 
+  /**
+   * Get current user's profile.
+   */
   public void fetchCurrentUser() {
     throwable.postValue(null);
     userRepository
@@ -78,6 +81,10 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
         );
   }
 
+  /**
+   * Allows modification of current user.
+   * @param user
+   */
   public void modifyCurrentUser(User user) {
     throwable.setValue(null);
     userRepository
@@ -94,17 +101,6 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
 
   public MutableLiveData<List<Organization>> getOrganizations() {
     return organizations;
-  }
-
-  public void fetchOrganizations() {
-    throwable.postValue(null);
-    userRepository
-        .getMyOrganizations()
-        .subscribe(
-            (orgs) -> organizations.postValue(orgs),
-            (throwable) -> postThrowable(throwable),
-            pending
-        );
   }
 
   /**
@@ -127,7 +123,6 @@ public class UserViewModel extends AndroidViewModel implements DefaultLifecycleO
             (acct) -> {
               account.postValue(acct);
               fetchCurrentUser();
-              fetchOrganizations();
             },
             (throwable) -> account.postValue(null)
 

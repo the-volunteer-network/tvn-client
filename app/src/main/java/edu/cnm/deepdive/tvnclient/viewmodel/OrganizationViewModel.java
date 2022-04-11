@@ -44,13 +44,24 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
     favorites = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
-    fetchAllOrganizations();
+//    fetchAllOrganizations(); // TODO Decide whether search fragment should start with ALL orgs or no orgs.
   }
 
   public void fetchAllOrganizations() {
     throwable.postValue(null);
     organizationRepository
         .getAll()
+        .subscribe(
+            (orgs) -> organizations.postValue(orgs),
+            (throwable) -> postThrowable(throwable),
+            pending
+        );
+  }
+
+  public void fetchMyOrganizations() {
+    throwable.postValue(null);
+    organizationRepository
+        .getMyOrganizations()
         .subscribe(
             (orgs) -> organizations.postValue(orgs),
             (throwable) -> postThrowable(throwable),

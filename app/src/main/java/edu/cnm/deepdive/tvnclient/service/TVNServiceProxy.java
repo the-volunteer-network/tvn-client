@@ -96,7 +96,8 @@ public interface TVNServiceProxy {
   Single<Boolean> setVolunteer(@Path("organizationId") UUID organizationId, @Body boolean volunteer, @Header("Authorization") String bearerToken);
 
 
-  // TODO add proxy methods to get user's OWNED organizations. End points in service side.
+  @GET("users/me/organizations")
+  Single<List<Organization>> getOwnedOrganizations(@Header("Authorization") String bearerToken);
 
   static TVNServiceProxy getInstance() {
     return InstanceHolder.INSTANCE;
