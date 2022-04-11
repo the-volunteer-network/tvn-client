@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentProfileBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.User;
@@ -63,7 +64,9 @@ public class ProfileFragment extends Fragment implements TextWatcher {
           SearchOrganizationAdapter adapter = new SearchOrganizationAdapter(
             getContext(),
             orgs,
-              (pos, org) -> { /* TODO Navigate to organization fragment to show details. */},
+              (pos, org) -> Navigation
+                  .findNavController(binding.getRoot())
+                  .navigate(ProfileFragmentDirections.editOrganization().setOrganizationId(org.getId())),
               (pos, org, fav) -> organizationViewModel.setFavorite(org.getId(), org, fav),
               (pos, org, vol) -> organizationViewModel.setVolunteer(org.getId(), org, vol),
               null
