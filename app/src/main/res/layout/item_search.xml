@@ -35,7 +35,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/half_dynamic_spacing"
-      android:tooltipText="Add yourself as a volunteer"
+      android:tooltipText="Add me as a volunteer"
       android:background="?android:selectableItemBackgroundBorderless"
       android:src="@drawable/ic_baseline_handshake_24"
       app:layout_constraintTop_toTopOf="@id/organization_name"
