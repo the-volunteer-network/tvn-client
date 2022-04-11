@@ -55,7 +55,10 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
         .setNegativeButton(android.R.string.cancel, (d, w) -> {
         })
         .setPositiveButton(android.R.string.ok, (d, w) -> {
-            // TODO Set the properties of organization based on contents of binding (what the user has typed in)
+          organization.setName(binding.name.getText().toString().trim());
+          organization.setAbout(binding.about.getText().toString().trim());
+          organization.setMission(binding.mission.getText().toString().trim());
+          organizationViewModel.modifyOrganization(organizationId, organization);
           if (organizationId == null) {
             organizationViewModel.addOrganization(organization);
           } else {
