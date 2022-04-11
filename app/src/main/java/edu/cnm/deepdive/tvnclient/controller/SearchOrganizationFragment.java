@@ -21,8 +21,10 @@ import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter;
 import edu.cnm.deepdive.tvnclient.adapter.SearchOrganizationAdapter.OnDetailsClickListener;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOrganizationBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
+import edu.cnm.deepdive.tvnclient.model.dto.User;
 import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
+import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 import java.util.List;
 
 /**
@@ -38,7 +40,6 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   private SearchOrganizationAdapter adapter;
   private GoogleMap googleMap;
   private List<Organization> organizations;
-  private OnDetailsClickListener listener;
 
   @Nullable
   @Override
@@ -66,21 +67,19 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
         .observe(getViewLifecycleOwner(), (orgs) -> {
           organizations = orgs;
           adapter = new SearchOrganizationAdapter(getContext(), orgs,
-              (position, org) -> {
-                //Todo display details of org
-                Navigation
-                    .findNavController(binding.getRoot())
-                    .navigate(SearchOrganizationFragmentDirections.editOrganization());
-              },
-              ((position, organization, favorite) -> {
-                organizationViewModel.setFavorite(organization.getId(), organization, favorite);
-              }),
-              ((position, organization, volunteer) -> {
-               organizationViewModel.setVolunteer(organization.getId(), organization, volunteer);
-              }),
-              ((position, organization) -> {
-               showOrganization(organization);
-              }));
+              (position, org) -> Navigation
+                  .findNavController(binding.getRoot())
+                  .navigate(
+                      SearchOrganizationFragmentDirections
+                          .editOrganization()
+                          .setOrganizationId(org.getId())
+                  ),
+              (position, organization, favorite) ->
+                  organizationViewModel.setFavorite(organization.getId(), organization, favorite),
+              (position, organization, volunteer) ->
+                  organizationViewModel.setVolunteer(organization.getId(), organization, volunteer),
+              (position, organization) -> showOrganization(organization)
+          );
 
           binding.organizations.setAdapter(adapter);
   //        showOrganizations();
