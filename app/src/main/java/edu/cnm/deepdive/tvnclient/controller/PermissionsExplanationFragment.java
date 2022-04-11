@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Handles the necessary Android permission for the TVN application.
+ */
 public class PermissionsExplanationFragment extends DialogFragment {
 
   private String[] permissionsToExplain;

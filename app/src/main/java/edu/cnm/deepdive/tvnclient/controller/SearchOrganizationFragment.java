@@ -25,6 +25,11 @@ import edu.cnm.deepdive.tvnclient.viewmodel.LocationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import java.util.List;
 
+/**
+ * Defines, manages and inflates the {@code fragment_search_organization.xml} layout.
+ * Extends OnMapReadyCallback, and displaying og the map.
+ * Handles its layout lifecycle and input events.
+ */
 public class SearchOrganizationFragment extends Fragment implements OnMapReadyCallback {
 
   private FragmentSearchOrganizationBinding binding;

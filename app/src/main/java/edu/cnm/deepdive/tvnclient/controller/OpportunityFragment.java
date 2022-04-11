@@ -18,6 +18,10 @@ import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
+/**
+ * Defines, manages and inflates the {@code fragment_opportunity.xml} layout.
+ * Handles its layout lifecycle and input events.
+ */
 public class OpportunityFragment extends Fragment {
 
   private OrganizationViewModel organizationViewModel;

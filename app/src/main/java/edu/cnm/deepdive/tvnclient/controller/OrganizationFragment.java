@@ -14,6 +14,10 @@ import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import java.util.UUID;
 
+/**
+ * Defines, manages and inflates the {@code fragment_organization.xml} layout.
+ * Handles its layout lifecycle and input events.
+ */
 public class OrganizationFragment extends DialogFragment {
 
   private OrganizationViewModel organizationViewModel;
