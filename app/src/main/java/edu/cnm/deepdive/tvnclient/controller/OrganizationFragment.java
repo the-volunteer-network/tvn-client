@@ -62,7 +62,6 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
           organization.setName(binding.name.getText().toString().trim());
           organization.setAbout(binding.about.getText().toString().trim());
           organization.setMission(binding.mission.getText().toString().trim());
-          organizationViewModel.modifyOrganization(organizationId, organization);
           if (organizationId == null) {
             organizationViewModel.addOrganization(organization);
           } else {
