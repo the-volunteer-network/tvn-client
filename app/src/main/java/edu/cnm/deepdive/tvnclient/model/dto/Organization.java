@@ -20,7 +20,10 @@ public class Organization {
   @Expose
   private boolean volunteer;
 
- @Expose
+  @Expose
+  private boolean owned;
+
+  @Expose
   private String about;
 
   @Expose
@@ -68,6 +71,14 @@ public class Organization {
 
   public void setVolunteer(boolean volunteer) {
     this.volunteer = volunteer;
+  }
+
+  public boolean isOwned() {
+    return owned;
+  }
+
+  public void setOwned(boolean owned) {
+    this.owned = owned;
   }
 
   public String getAbout() {

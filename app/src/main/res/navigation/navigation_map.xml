@@ -80,7 +80,6 @@
   <dialog
     android:id="@+id/navigation_edit_organization"
     android:name="edu.cnm.deepdive.tvnclient.controller.OrganizationFragment">
-
     <argument
       android:name="organization_id"
       app:argType="java.util.UUID"

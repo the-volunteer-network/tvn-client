@@ -66,6 +66,7 @@
       android:hint="@string/mission_label"/>
   </com.google.android.material.textfield.TextInputLayout>
 
+<!--
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/opportunities"
     android:layout_width="0dp"
@@ -75,6 +76,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>
+-->
 
 
 

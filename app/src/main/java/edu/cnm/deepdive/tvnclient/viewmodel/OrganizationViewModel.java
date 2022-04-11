@@ -111,15 +111,10 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             (throwable)-> postThrowable(throwable),
             pending
         );
-
-
-
-
   }
 
   public void setVolunteer(UUID id, Organization organization, boolean volunteer){
     throwable.setValue(null);
-
     organizationRepository
         .setVolunteer(id, volunteer)
         .subscribe(
@@ -131,12 +126,7 @@ public class OrganizationViewModel extends AndroidViewModel implements DefaultLi
             (throwable)-> postThrowable(throwable),
             pending
         );
-
-
-
-
   }
-
 
   public LiveData<Organization> getOrganization() {
     return organization;
