@@ -8,6 +8,7 @@
 
   <item
     android:id="@+id/navigation_profile"
+    android:icon="@drawable/icon_user"
     android:title="@string/profile_drawer_menu_label"/>
 <!--
   <item
@@ -16,10 +17,12 @@
 -->
   <item
     android:id="@+id/navigation_opportunity"
+    android:icon="@drawable/icon_volunteer"
     android:title="@string/my_opportunities_drawer_menu_label"/>
 
   <item
     android:id="@+id/navigation_search_organization"
+    android:icon="@drawable/icon_search"
     android:title="@string/search_organizations_drawer_menu_label"/>
 
 </group>
