@@ -34,6 +34,7 @@ public interface TVNServiceProxy {
 
   @GET("organizations")
   Single<List<Organization>> findOrganizations(@Query("q") String fragment, @Header("Authorization") String bearerToken);
+
   @POST("organizations")
   Single<Organization> addOrganization(@Body Organization organization, @Header("Authorization") String bearerToken);
 

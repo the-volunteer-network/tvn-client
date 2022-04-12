@@ -155,6 +155,7 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
     }
   }
 
+
   private void checkSubmitConditions() {
     dialog
         .getButton(AlertDialog.BUTTON_POSITIVE)

@@ -29,17 +29,17 @@ public class GoogleSignInService {
 
   private final GoogleSignInClient client;
 
+  /**
+   * Serves as an entry point for users on the application, allows them to log into app using google sign in services.
+   */
   private GoogleSignInService() {
-
     GoogleSignInOptions options = new GoogleSignInOptions.Builder()
         .requestEmail()
         .requestId()
         .requestProfile()
         .requestIdToken(BuildConfig.CLIENT_ID) // not necessary fir solitaire game
         .build();
-
     client = GoogleSignIn.getClient(context, options);
-
   }
 
   /**
@@ -50,6 +50,10 @@ public class GoogleSignInService {
     GoogleSignInService.context = context;
   }
 
+  /**
+   * Gets the instance of GoogleSignInService to utilize.
+   * @return
+   */
   public static GoogleSignInService getInstance() {
     return InstanceHolder.INSTANCE;
   }
@@ -76,18 +80,24 @@ public class GoogleSignInService {
         .map(this::getBearerToken);
   }
 
+  /**
+   * Retrieves bearer token to utilize in the signin service.
+   * @param account
+   * @return
+   */
   @NonNull
   private String getBearerToken(GoogleSignInAccount account) {
     return String.format(BEARER_TOKEN_FORMAT, account.getIdToken());
   }
 
+  /**
+   * Logs the account activity for GoogleSignIn services.
+   * @param account
+   */
   private void logAccount(GoogleSignInAccount account) {
-
     if (account != null ) {
       Log.d(getClass().getSimpleName(), (account.getIdToken() != null ? getBearerToken(account): "(none)" ));
-
     }
-
   }
 
   /**
@@ -135,8 +145,10 @@ public class GoogleSignInService {
         .subscribeOn(Schedulers.io());
   }
 
+  /**
+   * Holds an instance of the GoogleSignInService.
+   */
   private static class InstanceHolder {
-
     private static final GoogleSignInService INSTANCE = new GoogleSignInService();
   }
 

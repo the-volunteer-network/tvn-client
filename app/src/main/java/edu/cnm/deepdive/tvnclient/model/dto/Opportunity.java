@@ -12,8 +12,6 @@ public class Opportunity {
   @Expose
   private String name;
 
-
-
  @Expose
   private String title;
 
