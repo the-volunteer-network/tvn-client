@@ -6,7 +6,7 @@ import edu.cnm.deepdive.tvnclient.service.GoogleSignInService;
 import edu.cnm.deepdive.tvnclient.service.LocationRepository;
 
 /**
- *
+ * Starting  of the TVN application
  */
 public class TvnApplication extends Application {
 
