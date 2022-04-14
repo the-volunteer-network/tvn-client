@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-<group
-  android:checkableBehavior="single">
+  <group
+    android:checkableBehavior="single">
 
 
+    <item
+      android:id="@+id/navigation_profile"
+      android:icon="@drawable/icon_user"
+      android:title="@string/profile_drawer_menu_label"/>
 
-  <item
-    android:id="@+id/navigation_profile"
-    android:icon="@drawable/icon_user"
-    android:title="@string/profile_drawer_menu_label"/>
-<!--
-  <item
-    android:id="@+id/navigation_organization"
-    android:title="@string/organization_drawer_menu_label"/>
--->
-  <item
-    android:id="@+id/navigation_opportunity"
-    android:icon="@drawable/icon_volunteer"
-    android:title="@string/my_opportunities_drawer_menu_label"/>
+    <item
+      android:id="@+id/navigation_opportunity"
+      android:icon="@drawable/icon_volunteer"
+      android:title="@string/search_opportunities_label"/>
 
-  <item
-    android:id="@+id/navigation_search_organization"
-    android:icon="@drawable/icon_search"
-    android:title="@string/search_organizations_drawer_menu_label"/>
+    <item
+      android:id="@+id/navigation_search_organization"
+      android:icon="@drawable/icon_search"
+      android:title="@string/search_organizations_label"/>
 
-</group>
+  </group>
 </menu>

@@ -12,8 +12,6 @@ public class Opportunity {
   @Expose
   private String name;
 
-
-
  @Expose
   private String title;
 
@@ -26,6 +24,8 @@ public class Opportunity {
   @Expose
   private Date created;
 
+  @Expose
+  private Organization organization;
 
   public UUID getId() {
     return id;
@@ -73,5 +73,13 @@ public class Opportunity {
 
   public void setCreated(Date created) {
     this.created = created;
+  }
+
+  public Organization getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
   }
 }

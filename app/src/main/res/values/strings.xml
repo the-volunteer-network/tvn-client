@@ -25,4 +25,10 @@
   <string name="access_fine_location_explanation">This app uses location information to show nearby organizations.</string>
   <string name="access_coarse_location_explanation">This app uses location information to show nearby organizations.</string>
   <string name="organization_details_title">Organization Details</string>
+  <string name="all_organizations_name">All Organizations</string>
+  <string name="search_organizations_label">Search organizations</string>
+  <string name="search_opportunities_label">Search opportunities</string>
+  <string name="opportunity_name_label">Name of opportunity</string>
+  <string name="description_label">Description of opportunity</string>
+  <string name="opportunity_details_title">Opportunity details</string>
 </resources>

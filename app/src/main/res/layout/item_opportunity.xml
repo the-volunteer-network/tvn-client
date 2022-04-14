@@ -10,6 +10,7 @@
   android:focusable="true"
   android:layout_margin="@dimen/half_static_spacing"
   android:padding="@dimen/half_static_spacing"
+  android:elevation="@dimen/half_static_spacing"
   app:cardCornerRadius="@dimen/half_dynamic_spacing">
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,27 +20,34 @@
 
     <TextView
       android:id="@+id/organization_name"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:text="Doctors without borders:"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/opportunity_name"/>
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/half_static_spacing"
+      tools:text="Doctors without borders:"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
     <TextView
       android:id="@+id/opportunity_name"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:text="Looking for volunteers on Saturdays"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/half_static_spacing"
+      tools:text="Looking for volunteers on Saturdays"
       app:layout_constraintTop_toBottomOf="@id/organization_name"
-      app:layout_constraintBottom_toTopOf="@+id/description"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
       android:id="@+id/description"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:text="We are looking for someone available blablablabla"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/half_static_spacing"
+      tools:text="We are looking for someone available blablablabla"
       android:maxLines="3"
       android:ellipsize="end"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@id/opportunity_name"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
