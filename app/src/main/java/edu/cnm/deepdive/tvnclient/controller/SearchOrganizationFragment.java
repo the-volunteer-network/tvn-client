@@ -143,7 +143,7 @@ public class SearchOrganizationFragment extends Fragment implements OnMapReadyCa
   }
 
   @SuppressLint("MissingPermission")
-  private void showLocationIndicator() {
+  private synchronized void showLocationIndicator() {
     if (googleMap != null && permissions != null) {
       googleMap.setMyLocationEnabled(
           permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION));
