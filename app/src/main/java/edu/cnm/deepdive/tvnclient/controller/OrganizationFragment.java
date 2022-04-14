@@ -21,8 +21,8 @@ import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import java.util.UUID;
 
 /**
- * Defines, manages and inflates the {@code fragment_organization.xml} layout.
- * Handles its layout lifecycle and input events.
+ * Defines, manages and inflates the {@code fragment_organization.xml} layout. Handles its layout
+ * lifecycle and input events.
  */
 public class OrganizationFragment extends DialogFragment implements OnShowListener, TextWatcher {
 
@@ -84,18 +84,23 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
- //   getLifecycle().addObserver(organizationViewModel);
-    organizationViewModel
-        .getOrganization()
-        .observe(getViewLifecycleOwner(), (org) -> {
-          organization = org;
-          binding.name.setText(org.getName());
-          binding.about.setText(org.getAbout());
-          binding.mission.setText(org.getMission());
-          showButtons();
-        });
     if (organizationId != null) {
+      organizationViewModel
+          .getOrganization()
+          .observe(getViewLifecycleOwner(), (org) -> {
+            organization = org;
+            binding.name.setText(org.getName());
+            binding.about.setText(org.getAbout());
+            binding.mission.setText(org.getMission());
+            showButtons();
+          });
       organizationViewModel.fetchOrganization(organizationId);
+      organizationViewModel
+          .getOpportunities()
+          .observe(getViewLifecycleOwner(), (opps) -> {
+            // TODO Create an instance of opportunity adapter and attach to binding.opportunities
+          });
+      organizationViewModel.fetchAllOpportunities(organizationId);
     } else {
       organization = new Organization();
       binding.name.setText("");

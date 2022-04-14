@@ -60,8 +60,8 @@
 
   <fragment
     android:id="@+id/navigation_opportunity"
-    android:name="edu.cnm.deepdive.tvnclient.controller.OpportunityFragment"
-    tools:layout="@layout/fragment_opportunity"
+    android:name="edu.cnm.deepdive.tvnclient.controller.SearchOpportunityFragment"
+    tools:layout="@layout/fragment_search_opportunity"
     android:label="My opportunities"/>
 
   <dialog

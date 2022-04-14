@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
+import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.OpportunityAdapter;
-import edu.cnm.deepdive.tvnclient.databinding.FragmentOpportunityBinding;
+import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOpportunityBinding;
 import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
 import edu.cnm.deepdive.tvnclient.viewmodel.UserViewModel;
 
 /**
- * Defines, manages and inflates the {@code fragment_opportunity.xml} layout.
- * Handles its layout lifecycle and input events.
+ * Defines, manages and inflates the {@code fragment_search_opportunity.xml} layout. Handles its
+ * layout lifecycle and input events.
  */
-public class OpportunityFragment extends Fragment {
+public class SearchOpportunityFragment extends Fragment {
 
   private OrganizationViewModel organizationViewModel;
-  private FragmentOpportunityBinding binding;
+  private FragmentSearchOpportunityBinding binding;
   private UserViewModel userViewModel;
   private Opportunity opportunity;
   private OpportunityAdapter adapter;
@@ -35,14 +35,16 @@ public class OpportunityFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    binding = FragmentOpportunityBinding.inflate(inflater,container, false);
-    binding.searchButton.setOnClickListener((v) ->
-        organizationViewModel.findOpportunity(binding.searchBar.getText().toString().trim()));
-   /* binding.opportunities.setOnClickListener((v) -> {
-      Navigation
-          .findNavController(binding.getRoot());
-
-    });*/
+    binding = FragmentSearchOpportunityBinding.inflate(inflater, container, false);
+    binding.searchButton.setOnClickListener((v) -> {
+      Organization org = (Organization) binding.spinnerOrganizations.getSelectedItem();
+      String fragment = binding.searchBar.getText().toString().trim();
+      if (org.getId() == null) {
+        organizationViewModel.findOpportunities(fragment);
+      } else {
+        organizationViewModel.findOpportunities(fragment, org);
+      }
+    });
     return binding.getRoot();
   }
 
@@ -53,17 +55,24 @@ public class OpportunityFragment extends Fragment {
     organizationViewModel
         .getOpportunities()
         .observe(getViewLifecycleOwner(), (opps) -> {
-          adapter = new OpportunityAdapter(getContext(), opps);
+          adapter = new OpportunityAdapter(getContext(), opps,
+              binding.spinnerOrganizations.getSelectedItemPosition() == 0);
           binding.opportunities.setAdapter(adapter);
 
         });
     organizationViewModel
         .getOrganizations()
-        .observe(getViewLifecycleOwner(), (orgs) ->{
-          ArrayAdapter<Organization> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,orgs);
+        .observe(getViewLifecycleOwner(), (orgs) -> {
+          Organization noneSelected = new Organization();
+          noneSelected.setName(getString(R.string.all_organizations_name));
+          orgs.add(0, noneSelected);
+          ArrayAdapter<Organization> adapter = new ArrayAdapter<>(getContext(),
+              android.R.layout.simple_spinner_item, orgs);
           adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
           binding.spinnerOrganizations.setAdapter(adapter);
         });
+    organizationViewModel
+        .fetchAllOrganizations();
   }
 
   @Override

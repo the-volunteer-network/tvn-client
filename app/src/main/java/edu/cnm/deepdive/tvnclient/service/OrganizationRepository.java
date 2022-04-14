@@ -127,6 +127,18 @@ public class OrganizationRepository {
         .flatMap((token) -> serviceProxy.findOpportunities(keyword, token));
   }
 
+  /**
+   * Provides a list of opportunities for the user to view.
+   * @param keyword
+   * @param organization
+   * @return
+   *
+   */
+  public Single<List<Opportunity>> searchOpportunities(String keyword, Organization organization){
+    return refreshToken()
+        .flatMap((token) -> serviceProxy.findOpportunities(organization.getId(), keyword, token));
+  }
+
   // TODO Decide if we want the result, or just the fact that it was completed.
   //  public Single<Organization> modifyOrganization(UUID organizationId, Organization organization) {
 

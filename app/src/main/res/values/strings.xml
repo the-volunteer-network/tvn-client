@@ -25,4 +25,5 @@
   <string name="access_fine_location_explanation">This app uses location information to show nearby organizations.</string>
   <string name="access_coarse_location_explanation">This app uses location information to show nearby organizations.</string>
   <string name="organization_details_title">Organization Details</string>
+  <string name="all_organizations_name">All Organizations</string>
 </resources>
