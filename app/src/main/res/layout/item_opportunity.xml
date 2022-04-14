@@ -10,6 +10,7 @@
   android:focusable="true"
   android:layout_margin="@dimen/half_static_spacing"
   android:padding="@dimen/half_static_spacing"
+  android:elevation="@dimen/half_static_spacing"
   app:cardCornerRadius="@dimen/half_dynamic_spacing">
 
   <androidx.constraintlayout.widget.ConstraintLayout

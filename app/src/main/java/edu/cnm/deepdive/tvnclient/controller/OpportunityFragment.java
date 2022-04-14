@@ -9,62 +9,70 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import edu.cnm.deepdive.tvnclient.R;
-import edu.cnm.deepdive.tvnclient.databinding.FragmentOrganizationBinding;
+import edu.cnm.deepdive.tvnclient.databinding.FragmentOpportunityBinding;
+import edu.cnm.deepdive.tvnclient.model.dto.Opportunity;
 import edu.cnm.deepdive.tvnclient.model.dto.Organization;
 import edu.cnm.deepdive.tvnclient.viewmodel.OrganizationViewModel;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Defines, manages and inflates the {@code fragment_organization.xml} layout. Handles its layout
  * lifecycle and input events.
  */
-public class OrganizationFragment extends DialogFragment implements OnShowListener, TextWatcher {
+public class OpportunityFragment extends DialogFragment implements OnShowListener, TextWatcher {
 
   private OrganizationViewModel organizationViewModel;
-  private FragmentOrganizationBinding binding;
+  private FragmentOpportunityBinding binding;
   private UUID organizationId;
-  private Organization organization;
+  private UUID opportunityId;
+  private Opportunity opportunity;
   private AlertDialog dialog;
   private boolean displayed;
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    OrganizationFragmentArgs organizationFragmentArgs =
-        OrganizationFragmentArgs.fromBundle(getArguments());
-    organizationId = organizationFragmentArgs.getOrganizationId();
+    OpportunityFragmentArgs opportunityFragmentArgs =
+        OpportunityFragmentArgs.fromBundle(getArguments());
+    organizationId = opportunityFragmentArgs.getOrganizationId();
+    opportunityId = opportunityFragmentArgs.getOpportunityId();
   }
 
   @NonNull
   @Override
   public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     LayoutInflater inflater = LayoutInflater.from(getContext());
-    binding = FragmentOrganizationBinding.inflate(inflater, null, false);
+    binding = FragmentOpportunityBinding.inflate(inflater, null, false);
     binding.name.addTextChangedListener(this);
-    binding.about.addTextChangedListener(this);
-    binding.mission.addTextChangedListener(this);
+    binding.description.addTextChangedListener(this);
     dialog = new AlertDialog.Builder(getContext())
         .setIcon(R.drawable.ic_baseline_info_24)
-        .setTitle(R.string.organization_details_title)
+        .setTitle(R.string.opportunity_details_title)
         .setView(binding.getRoot())
         .setNeutralButton(android.R.string.ok, (d, w) -> {
         })
         .setNegativeButton(android.R.string.cancel, (d, w) -> {
         })
         .setPositiveButton(android.R.string.ok, (d, w) -> {
-          organization.setName(binding.name.getText().toString().trim());
-          organization.setAbout(binding.about.getText().toString().trim());
-          organization.setMission(binding.mission.getText().toString().trim());
-          if (organizationId == null) {
-            organizationViewModel.addOrganization(organization);
+          Organization org = (Organization) binding.organizations.getSelectedItem();
+          String name = binding.name.getText().toString().trim();
+          opportunity.setName(name);
+          opportunity.setTitle(name);
+          opportunity.setDescription(binding.description.getText().toString().trim());
+          opportunity.setNeededSkill("");
+          if (opportunityId == null) {
+            organizationViewModel.addOpportunity(org.getId(), opportunity);
           } else {
-            organizationViewModel.modifyOrganization(organizationId, organization);
+            organizationViewModel.modifyOpportunity(organizationId, opportunityId, opportunity);
           }
         })
         .create();
@@ -83,28 +91,24 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     organizationViewModel = new ViewModelProvider(this).get(OrganizationViewModel.class);
-    if (organizationId != null) {
-      organizationViewModel
-          .getOrganization()
-          .observe(getViewLifecycleOwner(), (org) -> {
-            organization = org;
-            binding.name.setText(org.getName());
-            binding.about.setText(org.getAbout());
-            binding.mission.setText(org.getMission());
-            showButtons();
-          });
-      organizationViewModel.fetchOrganization(organizationId);
-      organizationViewModel
-          .getOpportunities()
-          .observe(getViewLifecycleOwner(), (opps) -> {
-            // TODO Create an instance of opportunity adapter and attach to binding.opportunities
-          });
+    organizationViewModel
+        .getOrganizations()
+        .observe(getViewLifecycleOwner(), (orgs) -> {
+          List<Organization> myOrgs = orgs
+              .stream()
+              .filter((org) -> org.isOwned())
+              .collect(Collectors.toList());
+          ArrayAdapter<Organization> adapter = new ArrayAdapter<>(getContext(),
+              android.R.layout.simple_spinner_item, myOrgs);
+          binding.organizations.setAdapter(adapter);
+        });
+    organizationViewModel.fetchAllOrganizations();
+    if (opportunityId != null) {
       organizationViewModel.fetchAllOpportunities(organizationId);
     } else {
-      organization = new Organization();
+      opportunity = new Opportunity();
       binding.name.setText("");
-      binding.about.setText("");
-      binding.mission.setText("");
+      binding.description.setText("");
       showButtons();
     }
   }
@@ -122,22 +126,20 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
   }
 
   private void showButtons() {
-    if (displayed && organization != null) {
-      if (organizationId == null || organization.isOwned()) {
+    if (displayed && opportunity != null) {
+      if (opportunityId == null) {
         this.dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.GONE);
         this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
         this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
         binding.name.setEnabled(true);
-        binding.about.setEnabled(true);
-        binding.mission.setEnabled(true);
+        binding.description.setEnabled(true);
         checkSubmitConditions();
       } else {
         this.dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
         this.dialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
         binding.name.setEnabled(false);
-        binding.about.setEnabled(false);
-        binding.mission.setEnabled(false);
+        binding.description.setEnabled(false);
       }
     }
   }
@@ -165,8 +167,7 @@ public class OrganizationFragment extends DialogFragment implements OnShowListen
         .getButton(AlertDialog.BUTTON_POSITIVE)
         .setEnabled(
             !binding.name.getText().toString().trim().isEmpty()
-                && !binding.about.getText().toString().trim().isEmpty()
-                && !binding.mission.getText().toString().trim().isEmpty()
+                && !binding.description.getText().toString().trim().isEmpty()
         );
   }
 }

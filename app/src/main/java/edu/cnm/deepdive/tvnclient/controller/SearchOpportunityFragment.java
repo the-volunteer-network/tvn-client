@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import edu.cnm.deepdive.tvnclient.R;
 import edu.cnm.deepdive.tvnclient.adapter.OpportunityAdapter;
 import edu.cnm.deepdive.tvnclient.databinding.FragmentSearchOpportunityBinding;
@@ -26,10 +27,7 @@ public class SearchOpportunityFragment extends Fragment {
 
   private OrganizationViewModel organizationViewModel;
   private FragmentSearchOpportunityBinding binding;
-  private UserViewModel userViewModel;
-  private Opportunity opportunity;
   private OpportunityAdapter adapter;
-  private Spinner spinner;
 
   @Nullable
   @Override
@@ -45,6 +43,10 @@ public class SearchOpportunityFragment extends Fragment {
         organizationViewModel.findOpportunities(fragment, org);
       }
     });
+    binding.addOpportunity.setOnClickListener((v) -> Navigation
+        .findNavController(binding.getRoot())
+        .navigate(SearchOpportunityFragmentDirections.editOpportunity())
+    );
     return binding.getRoot();
   }
 

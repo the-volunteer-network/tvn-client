@@ -37,7 +37,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<Holder> {
   @NonNull
   @Override
   public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    ItemOpportunityBinding binding = ItemOpportunityBinding.inflate(inflater);
+    ItemOpportunityBinding binding = ItemOpportunityBinding.inflate(inflater, parent, false);
     return new Holder(binding);
   }
 
